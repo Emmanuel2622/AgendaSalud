@@ -1,3 +1,1 @@
-# AgendaSalud
-
-V1.0
+# RegistroClinico
