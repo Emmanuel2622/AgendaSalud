@@ -1,0 +1,182 @@
+html, body {
+    font-family: 'Open Sans', sans-serif;
+    color: #333;
+    height: 100% !important;
+}
+
+
+footer{
+    background-color: #F5F5F5;
+}
+
+.btn-celeste{
+    background-color: #4697ee;
+}
+
+.btn-celeste:hover{
+    transition: all 1s;
+    background-color: #bedeff;
+    border: 1px solid #4697ee;
+    color: #4697ee !important;
+}
+
+.text-gris{
+    color: #6c757d;
+}
+
+.text-turquesa{
+    color: #17a2b8;
+}
+
+.text-azul{
+    color: #0056b3;
+}
+
+.text-azul-marino{
+    color: #003366;
+}
+
+.text-celeste{
+    color: #4697ee;
+}
+
+
+.th{
+    color: #0056b3;
+    text-decoration: none;
+}
+
+.th:hover{
+    transition: all 1s;
+    color: #4697ee ;
+}
+
+.circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+    border: 2px solid #4697ee;
+    margin: 0 40px 10px 40px;
+    color: #6ab2ff;
+}
+
+.circle:hover{
+    transition: all 1s;
+    background-color: #bedeff;
+    color: #ffffff;
+}
+
+.icon {
+    font-size: 2rem;
+    color: #007bff;
+}
+
+.container-circles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.text-below {
+    text-align: center;
+    font-size: 18px;
+}
+
+.active{
+    color: #007bff !important;
+}
+
+.form-control {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    transition: all 0.2s ease-in-out;
+}
+
+input#patientName {
+    border-color: #007bff;
+    background-color: #f0f8ff;
+}
+
+.card-color-celeste{
+    background-color: #4697ee;
+}
+
+.ih{
+    max-height: 600px;
+    width: 100%;
+}
+
+.plan{
+    border: 2px solid #4697ee;
+}
+.form-signin{
+    max-width: 330px;
+    padding: 1rem;
+}
+
+.bt{
+    border: none;
+    color: #0d6efd;
+}
+
+/* Para Firefox y otros navegadores */
+input[type=number] {
+    appearance: textfield;  /* propiedad estándar */
+    -moz-appearance: textfield;  /* para compatibilidad con versiones más antiguas de Firefox */
+}
+
+/* Para Webkit browsers (Chrome, Safari, etc.) */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+.modal-body {
+    max-height: 400px; /* Ajusta esta altura según tus necesidades */
+    overflow-y: auto;
+}
+
+
+@media screen and (max-width: 768px) {
+    .navbar-collapse{
+        margin-top: 1.5rem !important;
+    }
+    .text-azul-marino{
+        margin-top: 1.5rem !important;
+    }
+    .d-resp{
+        display: block !important;
+        margin-bottom: 40px;
+    }
+    .elem-d{
+        display: none;
+    }
+    .img-fluid{
+        margin-bottom: 30px;
+    }
+
+    .circle{
+        width: 50px;
+        height: 50px;
+        font-size: 20px !important;
+    }
+    .text-below {
+        text-align: center;
+        font-size: 15px;
+    }
+    .carousel-caption{
+        margin-bottom: 20px !important;
+    }
+    .carousel-indicators{
+        margin-bottom: 2.5rem;
+    }
+}
