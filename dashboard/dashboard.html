@@ -37,10 +37,10 @@
             <a class="nav-link" href="https://wa.me/2615930274">Ayuda</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">Config</a>
+            <a class="nav-link" href="dashboardConfig.html">Config</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/dashboard/dashboardRegistroClinico.html">Registro Clinico</a>
+            <a class="nav-link" href="dashboardRegistroClinico.html">Registro Clinico</a>
           </li>
           <li class="nav-item">
             <button id="logout" class="nav-link text-danger">Cerrar Sesión</button>
@@ -53,12 +53,7 @@
     <h1 id="userName" class="text-azul my-4">Te damos la bienvenida a tu Cuenta</h1>
   </div>
 
-  <section class="container my-4">
-    <label for="CalendarID" class="mb-2 text-azul-marino">CalendarID</label>
-    <input type="text" name="CalendarID" id="save-calendarid" class="form-control mb-3">
-
-  </section>
-
+  <!-- Editar Perfil -->
   <section class="container my-4" id="perfilProf">
     <hr class="mb-4">
     <h2 class="text-azul-marino">Perfil Profesional</h2>
@@ -77,9 +72,23 @@
         <li><i class="fa-solid fa-calendar-days text-azul"></i> Horarios de jornada: <span id="horarios"></span></li>
       </ul>
     </div>
-    <button class="btn btn-primary" id="editar">Editar</button>
+    <button class="btn btn-primary" id="editar"><i class="fa-solid fa-pencil"></i> Editar</button>
   </section>
 
+  <!-- Guardar Id Calendar -->
+  <section class="container my-4" id="editCalen">
+    <hr class="mb-4">
+    <h2 class="text-azul-marino">Calendario Profesional</h2>
+    <div class="">
+      Clendario actual:
+      <span id="idCalendar">No hay calendario seleccionado</span>
+    </div>
+    <label for="CalendarID" class="mb-2 text-azul-marino">CalendarID</label>
+    <input type="text" name="CalendarID" id="save-calendarid" class="form-control mb-3">
+    <button type="button" name="button" class="btn btn-primary text-white" onclick="saveIdCalendar()"><i class="fa-regular fa-floppy-disk"></i> Guardar</button>
+  </section>
+
+  <!-- Editar Perfil -->
   <section class="container my-5" id="perfilProfEdit" style="display: none;">
     <hr class="mb-4">
     <h2 class="text-azul-marino">Editar perfil</h2>
@@ -111,13 +120,13 @@
 
         <!-- Formulario de Dirección -->
         <div class="carousel-item active" id="direccion">
-          <form>
+          <div>
             <label for="direccion" class="mb-2 text-azul-marino">Dirección:</label>
             <input type="text" id="save-direccion" name="direccion" required class="form-control mb-3" /><br />
 
-            <button type="submit" class="btn btn-primary" onclick="saveDireccion()">Guardar Dirección</button>
+            <button type="button" class="btn btn-primary" onclick="saveDireccion()"><i class="fa-regular fa-floppy-disk"></i> Guardar Dirección</button>
             <button type="button" class="btn btn-danger ms-2" id="volver">Volver</button>
-          </form>
+          </div>
         </div>
 
         <!-- Formulario de Horario -->
@@ -129,31 +138,31 @@
             <label for="endHour" class="mb-2 text-azul-marino">Horario de Fin jornada:</label>
             <input type="time" id="endHour" name="endHour" required class="form-control mb-3" /><br />
 
-            <button type="submit" class="btn btn-primary">Guardar Horarios</button>
+            <button type="submit" class="btn btn-primary"><i class="fa-regular fa-floppy-disk"></i> Guardar Horarios</button>
             <button type="button" class="btn btn-danger ms-2" id="volver2">Volver</button>
           </form>
         </div>
 
         <!-- Formulario de Precio -->
         <div class="carousel-item" id="precio">
-          <form>
+          <div>
             <label for="precio" class="mb-2 text-azul-marino">Precio:</label>
             <input type="number" id="save-precio" name="precio" required class="form-control mb-3" /><br />
 
-            <button type="submit" class="btn btn-primary" onclick="savePrecio()">Guardar Precio</button>
+            <button type="button" class="btn btn-primary" onclick="savePrecio()"><i class="fa-regular fa-floppy-disk"></i> Guardar Precio</button>
             <button type="button" class="btn btn-danger ms-2" id="volver3">Volver</button>
-          </form>
+          </div>
         </div>
 
         <!-- Formulario de Descripción -->
         <div class="carousel-item" id="descripcion">
-          <form>
+          <div>
             <label for="descripcion" class="mb-2 text-azul-marino">Descripción:</label>
             <input type="text" id="save-descripcion" name="descripcion" required class="form-control mb-3" /><br />
 
-            <button type="submit" class="btn btn-primary" onclick="saveDescripcion()">Guardar Descripción</button>
+            <button type="button" class="btn btn-primary" onclick="saveDescripcion()"><i class="fa-regular fa-floppy-disk"></i> Guardar Descripción</button>
             <button type="button" class="btn btn-danger ms-2" id="volver4">Volver</button>
-          </form>
+          </div>
         </div>
       </div>
     </div>

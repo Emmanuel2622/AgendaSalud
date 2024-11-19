@@ -4,7 +4,6 @@ async function addProfessional() {
   const professional = document.getElementById("fullName").value;
   const email = document.getElementById("registerEmail").value;
 
-  console.log(professional, email, area);
   if (area && professional && email) {
     const data = { area: area, professional: professional };
 
@@ -19,30 +18,37 @@ async function addProfessional() {
         }
       );
 
-      if (addProfessionalResponse.ok) {
-        // Enviar datos a la API para guardar el área
-        const saveAreaResponse = await fetch("/auth/save-area", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, area }),
-        });
-
-        const result = await saveAreaResponse.json();
-        console.log(result); // Reemplazado 'test' con 'result'
-
-        alert("Área y profesional agregados exitosamente");
-        document.getElementById("areaNameDash").value = ""; // Limpiar el input
-        //location.reload();
-      } else {
-        alert("Error al agregar el área y profesional");
+      if (!addProfessionalResponse.ok) {
+        throw new Error("Error al agregar profesional.");
       }
+
+      // Enviar datos a la API para guardar el área
+      const saveAreaResponse = await fetch("/auth/save-area", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, area }),
+      });
+
+      if (!saveAreaResponse.ok) {
+        throw new Error("Error al guardar el área.");
+      }
+
+      const result = await saveAreaResponse.json();
+      console.log(result);
+
+      console.log("Área y profesional agregados exitosamente");
+      document.getElementById("areaNameDash").value = ""; // Limpiar el input
+      return true;
     } catch (error) {
       console.error("Error:", error);
+      alert(error.message);
+      return false;
     }
   } else {
     alert("Por favor, ingresa el área, profesional y email.");
+    return false;
   }
 }
 
@@ -76,30 +82,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-
 document.getElementById("registerForm").addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  // Obtener los valores del formulario
   const activationCode = document.getElementById("activationCode").value;
   const fullName = document.getElementById("fullName").value;
   const email = document.getElementById("registerEmail").value;
   const password = document.getElementById("registerPassword").value;
   const area = document.getElementById("areaNameDash").value;
-  
-  const response = await fetch("/auth/register", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ fullName, email, password, activationCode, area }),
-  });
 
-  if (response.ok) {
-    addProfessional();
-    window.location.href = "/dashboard";
-  } else {
-    const errorData = await response.json();
-    alert(errorData.error || "Error en el registro.");
+  try {
+    // Enviar datos para registrar al usuario
+    const response = await fetch("/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ fullName, email, password, activationCode, area }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Error en el registro.");
+    }
+
+    // Si el registro fue exitoso, agregar profesional
+    const addProfessionalSuccess = await addProfessional();
+    if (addProfessionalSuccess) {
+      // Redirigir si ambas operaciones fueron exitosas
+      window.location.href = "/dashboard";
+    }
+  } catch (error) {
+    alert(error.message || "Ocurrió un error inesperado.");
   }
-
-  
 });

@@ -1,4 +1,4 @@
-// cambiar la direccion  
+// cambiar la direccion
 async function saveDireccion(){
     const response = await fetch('/api/user');
     const userData = await response.json();
@@ -11,7 +11,7 @@ async function saveDireccion(){
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, direccion}), 
+        body: JSON.stringify({ email, direccion}),
     });
     const data = await responseDirec.json();
 
@@ -19,7 +19,9 @@ async function saveDireccion(){
 
     if (responseDirec.ok) {
         if (direcElement) {
-            direcElement.textContent = data.direccion; 
+            direcElement.textContent = data.direccion;
+            document.getElementById("save-direccion").value = '';
+            location.reload();
         } else {
             console.error('El elemento con el ID "save-direccion" no se encontró en el DOM.');
         }
@@ -28,7 +30,7 @@ async function saveDireccion(){
     }
 };
 
-// cambiar el precio  
+// cambiar el precio
 async function savePrecio(){
     const response = await fetch('/api/user');
     const userData = await response.json();
@@ -41,7 +43,7 @@ async function savePrecio(){
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, precio}), 
+        body: JSON.stringify({ email, precio}),
     });
     const data = await responsePrecio.json();
 
@@ -49,7 +51,9 @@ async function savePrecio(){
 
     if (responsePrecio.ok) {
         if (precioElement) {
-            precioElement.textContent = data.precio; 
+            precioElement.textContent = data.precio;
+            document.getElementById("save-precio").value = '';
+            location.reload();
         } else {
             console.error('El elemento con el ID "save-precio" no se encontró en el DOM.');
         }
@@ -71,7 +75,7 @@ async function saveDescripcion(){
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, descripcion}), 
+        body: JSON.stringify({ email, descripcion}),
     });
     const data = await responsedescripcion.json();
 
@@ -79,9 +83,45 @@ async function saveDescripcion(){
 
     if (responsedescripcion.ok) {
         if (descripcionElement) {
-            descripcionElement.textContent = data.descripcion; 
+            descripcionElement.textContent = data.descripcion;
+            document.getElementById("save-descripcion").value = '';
+            location.reload();
         } else {
             console.error('El elemento con el ID "save-descripcion" no se encontró en el DOM.');
+        }
+    } else {
+        console.error('Error:', data.error);
+    }
+};
+
+//
+
+// cambiar ID calendarid
+async function saveIdCalendar(){
+    const response = await fetch('/api/user');
+    const userData = await response.json();
+    const email = userData.email;
+    const calendarid = document.getElementById("save-calendarid").value;
+
+
+    const responseCalenID = await fetch('/auth/save-calenID', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, calendarid}),
+    });
+    const data = await responseCalenID.json();
+
+    const direcElement = document.getElementById('save-calendarid');
+
+    if (responseCalenID.ok) {
+        if (direcElement) {
+            direcElement.textContent = data.calendarid;
+            document.getElementById("save-calendarid").value = '';
+            location.reload();
+        } else {
+            console.error('El elemento con el ID "save-calendarid" no se encontró en el DOM.');
         }
     } else {
         console.error('Error:', data.error);
@@ -99,6 +139,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('userName').textContent = `Te damos la bienvenida, ${userData.fullName}!`;
         document.getElementById('name').textContent = `${userData.fullName}`;
     }
+
+    // Obtener ID Calendar del prof
+    const responseCalenID = await fetch('/auth/get-calenID', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ fullName: userData.fullName }),
+    });
+    const dataIdCalen = await responseCalenID.json();
+
+    const calendIdElement = document.getElementById('idCalendar');
+
+    if (responseCalenID.ok) {
+        if (calendIdElement) {
+            calendIdElement.textContent = dataIdCalen.calendarid;
+        } else {
+            console.error('El elemento con el ID "idCalendar" no se encontró en el DOM.');
+        }
+    } else {
+        console.error('Error:', dataIdCalen.error);
+    }
+
     // Obtener Area del prof
     const responseArea = await fetch('/auth/get-area', {
         method: 'POST',
@@ -175,9 +238,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             body: JSON.stringify({ email: userData.email }),
         });
         const dartaDescripcion = await responseDescripcion.json();
-    
+
         const descripcionElement = document.getElementById('cont-descripcion');
-    
+
         if (responseDescripcion.ok) {
             if (descripcionElement) {
                 descripcionElement.textContent = dartaDescripcion.descripcion;
@@ -191,26 +254,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('editar').addEventListener('click', function() {
         document.getElementById('perfilProf').style.display = 'none';
         document.getElementById('perfilProfEdit').style.display = 'block';
+        document.getElementById('editCalen').style.display = 'none';
     });
 
     document.getElementById('volver').addEventListener('click', function() {
         document.getElementById('perfilProf').style.display = 'block';
         document.getElementById('perfilProfEdit').style.display = 'none';
+        document.getElementById('editCalen').style.display = 'block';
     });
 
     document.getElementById('volver2').addEventListener('click', function() {
         document.getElementById('perfilProf').style.display = 'block';
         document.getElementById('perfilProfEdit').style.display = 'none';
+        document.getElementById('editCalen').style.display = 'block';
     });
 
     document.getElementById('volver3').addEventListener('click', function() {
         document.getElementById('perfilProf').style.display = 'block';
         document.getElementById('perfilProfEdit').style.display = 'none';
+        document.getElementById('editCalen').style.display = 'block';
     });
 
     document.getElementById('volver4').addEventListener('click', function() {
         document.getElementById('perfilProf').style.display = 'block';
         document.getElementById('perfilProfEdit').style.display = 'none';
+        document.getElementById('editCalen').style.display = 'block';
     });
 
     const fullName = userData.fullName

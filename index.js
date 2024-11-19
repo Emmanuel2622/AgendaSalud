@@ -5,6 +5,7 @@ const { google } = require('googleapis');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const mongoose = require('./config/database');
+const fs = require('fs');
 
 const Professional = require('./models/Professional');
 const authRoutes = require('./routes/authRoutes');
@@ -30,7 +31,7 @@ app.use(session({
     secret: 'mi-clave-secreta',
     resave: false,
     saveUninitialized: false,
-    cookie: { 
+    cookie: {
         maxAge: 1000 * 60 * 60 * 24, // 24 horas
         secure: false, // Cambia a true si usas HTTPS
         httpOnly: true
@@ -43,7 +44,7 @@ app.use('/pacient', pacienteRoutes);
 app.get('/api/user', (req, res) => {
     console.log('Sesión:', req.session);
     if (req.session.isAuthenticated) {
-        res.json({ fullName: req.session.fullName, email: req.session.email});  
+        res.json({ fullName: req.session.fullName, email: req.session.email});
     } else {
         res.status(401).json({ error: 'No autenticado' });
     }
@@ -76,13 +77,22 @@ app.get('/dashboard/dashboardRegistroClinico.html', (req, res) => {
 
 });
 
-const twilio = require('twilio');
-const { format } = require('date-fns');
+app.get('/dashboard/dashboardConfig.html', (req, res) => {
+    if (req.session.isAuthenticated) {
+        res.sendFile(path.join(__dirname, 'dashboard', 'dashboardconfig.html'));
+    } else {
+        res.redirect('/login.html');
+    }
+
+});
+
+//const twilio = require('twilio');
+//const { format } = require('date-fns');
 
 // Configuración de Twilio
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN; 
-const client = new twilio(accountSid, authToken);
+//const accountSid = process.env.TWILIO_ACCOUNT_SID;
+//const authToken = process.env.TWILIO_AUTH_TOKEN;
+//const client = new twilio(accountSid, authToken);
 
 
 // Función para enviar el mensaje de WhatsApp
@@ -102,6 +112,26 @@ const sendWhatsApp = (event, number, numberCode) => {
     .then(message => console.log('Mensaje enviado:', message.sid, fullNumber))
     .catch(error => console.log('Error al enviar el mensaje:', error));
 };
+
+
+const jsonData = {
+    type: process.env.TYPE,
+    project_id: process.env.PROJECT_ID,
+    private_key_id: process.env.PRIVATE_KEY_ID,
+    private_key: process.env.PRIVATE_KEY,
+    client_email: process.env.CLIENT_EMAIL,
+    client_id: process.env.CLIENT_ID,
+    auth_uri: process.env.AUTH_URI,
+    token_uri: process.env.TOKEN_URI,
+    auth_provider_x509_cert_url: process.env.AUTH_PROVIDER_X509_CERT_URL,
+    client_x509_cert_url: process.env.CLIENT_X509_CERT_URL,
+    universe_domain: process.env.UNIVERSE_DOMAIN,
+  };
+
+  const jsonContent = JSON.stringify(jsonData, null, 2);
+
+  fs.writeFileSync('calenderregistroclinico-8aedace47e68.json', jsonContent, 'utf8');
+  console.log("Archivo JSON creado con éxito: calenderregistroclinico-8aedace47e68.json");
 
 const SERVICE_ACCOUNT_KEY_FILE = path.join(__dirname, 'calenderregistroclinico-8aedace47e68.json');
 let CALENDAR_ID = '';
@@ -284,7 +314,7 @@ app.get('/search-appointment', async (req, res) => {
 
     try {
         const calendar = await authenticate();
-        
+
         const params = {
             calendarId: CALENDAR_ID,
             showDeleted: false,
@@ -296,7 +326,7 @@ app.get('/search-appointment', async (req, res) => {
         const events = response.data.items;
 
         // Filtrar eventos por correo electrónico (si está presente en la descripción)
-        const filteredEvents = events.filter(event => 
+        const filteredEvents = events.filter(event =>
             event.description.includes(email)
         );
 

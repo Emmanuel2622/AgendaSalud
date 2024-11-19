@@ -14,23 +14,9 @@ exports.register = async (req, res) => {
         if (!codeEntry || codeEntry.used) {
             return res.status(400).json({ error: 'Código de activación inválido o ya utilizado.' });
         }
-        
+
         if (!area) {
             return res.status(400).json({ error: 'El campo área es obligatorio.' });
-        }        
-
-        // Verificar la primera letra del código de activación
-        let calenderNum;
-        const firstLetter = activationCode.charAt(0); // Obtener la primera letra
-
-        if (firstLetter === 'B') {
-            calenderNum = 1;
-        } else if (firstLetter === 'M') {
-            calenderNum = 3;
-        } else if (firstLetter === 'F') {
-            calenderNum = 1000;
-        } else {
-            return res.status(400).json({ error: 'Código de activación inválido.' });
         }
 
         let startHour = "00:00"
@@ -41,6 +27,7 @@ exports.register = async (req, res) => {
         let descripcion = "Descripción completa del profesional, su experiencia en el campo de la salud, especialidades y los servicios que ofrece. Detalle de los años de trayectoria, certificaciones, y las instituciones en las que ha trabajado.";
         let precio = 0;
         let direccion = "Calle Muestra 123";
+        let calendarid = ""
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({
             fullName,
@@ -49,7 +36,6 @@ exports.register = async (req, res) => {
             activationCode,
             startHour,
             endHour,
-            calenderNum,
             area,
             descripcion,
             precio,
@@ -153,7 +139,7 @@ exports.getArea = async (req, res) => {
 // Descripcion
 
 exports.saveDesc = async (req, res) => {
-    const { email, descripcion } = req.body;  
+    const { email, descripcion } = req.body;
 
     try {
         // Busca al usuario por el correo electrónico
@@ -204,7 +190,7 @@ exports.getDesc = async (req, res) => {
 // Precio
 
 exports.savePrecio = async (req, res) => {
-    const { email, precio } = req.body;  
+    const { email, precio } = req.body;
 
     try {
         // Busca al usuario por el correo electrónico
@@ -255,7 +241,7 @@ exports.getPrecio = async (req, res) => {
 // Direccion
 
 exports.saveDirec = async (req, res) => {
-    const { email, direccion } = req.body;  
+    const { email, direccion } = req.body;
 
     try {
         // Busca al usuario por el correo electrónico
@@ -303,18 +289,43 @@ exports.getDirec = async (req, res) => {
     }
 };
 
-// obtener CalendarID
+// CalendarID
+
+exports.saveCalenID = async (req, res) => {
+    const { email, calendarid } = req.body;
+
+    try {
+        // Busca al usuario por el correo electrónico
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        // Verificar si el valor de el calendarid es válido (puedes adaptar esto según tu lógica)
+        if (!calendarid || typeof calendarid !== 'string' || calendarid.trim() === '') {
+            return res.status(400).json({ error: 'Direccion no válida' });
+        }
+
+        // Asignar el valor de el calendarid al usuario
+        user.calendarid = calendarid;
+        await user.save();  // Guardar los cambios en la base de datos
+
+        res.status(200).json({ message: 'Id calendar asignada exitosamente', calendarid });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al asignar el calendarid', details: error.message });
+    }
+};
 
 exports.getCalenID = async (req, res) => {
     try {
-        // Obtener el fullName desde el cuerpo de la solicitud o la sesión
+        // Obtener el email desde el cuerpo de la solicitud o la sesión
         const fullName = req.body.fullName;
 
         if (!fullName) {
-            return res.status(400).json({ error: 'fullName no proporcionado' });
+            return res.status(400).json({ error: 'Email no proporcionado' });
         }
 
-        // Buscar al usuario por fullName
+        // Buscar al usuario por email
         const user = await User.findOne({ fullName });
 
         if (!user) {
