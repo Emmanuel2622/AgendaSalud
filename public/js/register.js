@@ -89,8 +89,11 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
   const activationCode = document.getElementById("activationCode").value;
   const fullName = document.getElementById("fullName").value;
   const email = document.getElementById("registerEmail").value;
+  const dni = document.getElementById("registerDNI").value;
+  const telefono = document.getElementById("registerPhone").value;
   const password = document.getElementById("registerPassword").value;
   const area = document.getElementById("areaNameDash").value;
+
 
   try {
     // Enviar datos para registrar al usuario
@@ -99,7 +102,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ fullName, email, password, activationCode, area }),
+      body: JSON.stringify({ fullName, email, dni, telefono, password, activationCode, area }),
     });
 
     if (!response.ok) {

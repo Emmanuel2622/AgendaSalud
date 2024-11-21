@@ -15,7 +15,7 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg p-3">
+  <nav class="navbar navbar-expand-lg p-3 mb-5 border-bottom shadow">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
         aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,16 +30,13 @@
             <a class="nav-link" aria-current="page" href="../dashboard">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../planes.html">Planes</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="https://wa.me/2615930274">Ayuda</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="../dashboardConfig.html">Config</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="/dashboard/dashboardRegistroClinico.html">Registro Clinico</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://wa.me/2615930274">Ayuda</a>
           </li>
           <li class="nav-item">
             <button id="logout" class="nav-link text-danger">Cerrar Sesión</button>
@@ -50,8 +47,10 @@
   </nav>
 
 
-  <div class="text-center">
+  <div class="text-center container">
     <h2 class="text-azul mb-4">Registro Clínico</h2>
+    <hr class="mb-4">
+
   </div>
 
   <div class="container" id="menu">
@@ -187,6 +186,7 @@
 
 
   <!-- Section Adevertencia -->
+  <!--
   <section>
     <div class="container">
       <hr class="mb-4">
@@ -195,16 +195,12 @@
         <div class="card-body">
           <h5 class="card-title">Aviso</h5>
           <p class="card-text">
-            Por el momento, los profesionales solo podrán cambiar la hora de jornada, ya que el sistema se encuentra en
-            desarrollo.
-            Sin embargo, en un futuro cercano, planeamos permitirles actualizar también la descripción, el precio y la
-            localidad,
-            para que los pacientes tengan toda la información disponible.
           </p>
         </div>
       </div>
     </div>
   </section>
+   -->
 
   <!-- Modal -->
   <div class="modal fade" id="historialModal" tabindex="-1" aria-labelledby="historialModalLabel" aria-hidden="true">
@@ -226,28 +222,11 @@
     </div>
   </div>
 
-  <footer>
-    <div class="d-flex flex-wrap justify-content-between align-items-center p-4 border-top">
-      <!-- Información de la compañía y contacto -->
-      <div class="col-md-4 d-flex align-items-center mb-3">
-        <span class="mb-md-0 text-body-secondary">
-          © 2024 Company, Denis
-        </span>
-      </div>
-
-      <!-- Enlaces rápidos: Política de Privacidad, Términos y Condiciones, Contacto -->
-      <ul class="nav col-md-4 list-unstyled mb-3">
-        <li class="me-2"><a href="politica-privacidad.html" class="text-muted">Política de Privacidad</a></li>
-        <li class="me-2"><a href="terminos-condiciones.html" class="text-muted">Términos y Condiciones</a></li>
-      </ul>
-
-      <!-- Redes Sociales -->
-      <ul class="nav col-md-4 justify-content-end list-unstyled d-flex mb-3">
-        <li class="me-3"><a class="fs-4 text-azul" href="#"><i class="fa-brands fa-x-twitter"></i></a></li>
-        <li class="me-3"><a class="fs-4 text-azul" href="#"><i class="fa-brands fa-instagram"></i></a></li>
-        <li class=""><a class="fs-4 text-azul" href="https://wa.me/2615930274"><i class="fa-brands fa-whatsapp"></i></a>
-        </li>
-      </ul>
+  <footer class="footer text-center py-4 mt-5 border-top">
+    <p>&copy; 2024 Agenda Salud. Todos los derechos reservados.</p>
+    <div>
+        <a href="terminos.html">Términos de servicio</a> |
+        <a href="politicas.html">Política de privacidad</a>
     </div>
   </footer>
 

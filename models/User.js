@@ -11,6 +11,15 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    dni: {
+        type: Number,
+        required: true,
+        unique: true,
+    },
+    telefono: {
+        type: Number,
+        required: true,
+    },
     password: {
         type: String,
         required: true,
@@ -19,13 +28,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    startHour: { 
+    startHour: {
         type: String,
-        required: false 
+        required: false
     },
     endHour: {
         type: String,
-        required: false 
+        required: false
     },
     area:{
         type: String,

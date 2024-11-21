@@ -3,7 +3,7 @@ const ActivationCode = require('../models/ActivationCode');
 const bcrypt = require('bcrypt');
 
 exports.register = async (req, res) => {
-    const { fullName, email, password, activationCode, area } = req.body;
+    const { fullName, email, dni, telefono, password, activationCode, area } = req.body;
     try {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -32,6 +32,8 @@ exports.register = async (req, res) => {
         const newUser = new User({
             fullName,
             email,
+            dni,
+            telefono,
             password: hashedPassword,
             activationCode,
             startHour,
