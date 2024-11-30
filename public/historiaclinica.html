@@ -41,17 +41,54 @@
     </div>
   </nav>
 
-  <section class="container" id="">
-    <div class="row">
+  <!-- Buscar Historia  Clinica -->
+  <div class="container" id="">
+    <h2 class="my-4 mb-4">Buscar Historia Clinica</h2>
+    <form class="mb-3">
+      <label for="areaName" class="text-azul-marino"><i class="fas fa-briefcase active mb-3"></i> Area Profesional:</label>
+      <select id="areaName" name="areaName" required class="form-select">
+        <option value="">Selecciona un Area</option>
+      </select>
 
+      <label for="profName" class="text-azul-marino"><i class="fas fa-user active mb-3"></i> Elija un Profesional:</label>
+      <select id="profName" name="profName" required class="form-select">
+        <option value="">Selecciona un Profesional</option>
+      </select>
+
+      <label for="indni" class="form-label mt-3"><i class="fas fa-id-card active"></i> DNI:</label>
+      <input type="number" class="form-control" id="indni" placeholder="Ingresa el DNI" required><br />
+
+      <label for="passwd" class="form-label"><i class="fas fa-lock active"></i> Contraseña:</label>
+      <input type="password" class="form-control" id="passwd" placeholder="Ingresa la contraseña" required><br />
+
+      <button type="button" id="volver" class="btn btn-celeste text-white me-2">Volver</button>
+      <button id="buscar" type="submit" class="btn btn-celeste text-white" onclick="searchPaciente()">
+        <i class="fa-solid fa-magnifying-glass me-2"></i></i>Buscar
+      </button>
+    </form>
+  </div>
+
+  <!-- Section Adevertencia -->
+  <section>
+    <div class="container">
+      <hr class="mb-4">
+
+      <div class="card card-color-celeste text-white mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Aviso</h5>
+          <p class="card-text">
+            La contraseña que debes ingresar es la ya previamente dada por el medico con el que fuiste atendido.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
   <footer class="footer text-center py-4 mt-5 border-top">
     <p>&copy; 2024 Agenda Salud. Todos los derechos reservados.</p>
     <div>
-        <a href="terminos.html">Términos de servicio</a> |
-        <a href="politicas.html">Política de privacidad</a>
+      <a href="terminos.html">Términos de servicio</a> |
+      <a href="politicas.html">Política de privacidad</a>
     </div>
   </footer>
 
@@ -59,6 +96,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
-
+  <script src="js/historiaclinica.js"></script>
+  <script src="js/select-prof.js"></script>
 </body>
+
 </html>
