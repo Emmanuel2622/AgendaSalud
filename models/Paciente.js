@@ -10,6 +10,10 @@ const pacienteSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    password: {
+      type: [String],
+      required: true
+    },
     dni: {
         type: String,
         required: true,
@@ -32,12 +36,16 @@ const pacienteSchema = new mongoose.Schema({
         required: true
     },
     fecha: {
-        type: [String], 
+        type: [String],
         required: true
     },
     area: {
         type: [String],
         required: true
+    },
+    profesional: {
+      type: [String],
+      required: true
     }
 });
 

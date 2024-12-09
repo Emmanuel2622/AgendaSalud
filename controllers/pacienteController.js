@@ -51,7 +51,7 @@ exports.saveData = async (req, res) => {
 };
 
 exports.data = async (req, res) => {
-    const { dni } = req.body;
+    const { dni, password } = req.body;
 
     console.log("DNI recibido:", dni); // Debug: Verificar DNI recibido
 
@@ -59,6 +59,10 @@ exports.data = async (req, res) => {
         const pacient = await Patient.findOne({ dni });
         if (!pacient) {
             return res.status(404).json({ error: 'Paciente no encontrado' });
+        }
+
+        if (password != pacient.password) {
+            return res.status(404).json({ error: 'Contraseña incorrecta' });
         }
 
         // Formatear las fechas en el backend

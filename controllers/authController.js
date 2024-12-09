@@ -3,7 +3,7 @@ const ActivationCode = require('../models/ActivationCode');
 const bcrypt = require('bcrypt');
 
 exports.register = async (req, res) => {
-    const { fullName, email, dni, telefono, password, activationCode, area } = req.body;
+    const { fullName, email, dni, password, telefono, activationCode, area } = req.body;
     try {
         const existingUser = await User.findOne({ email });
         if (existingUser) {

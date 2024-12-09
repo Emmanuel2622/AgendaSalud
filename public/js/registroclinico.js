@@ -9,13 +9,14 @@ async function addPacient() {
   const tratamiento = document.getElementById("tratamiento").value;
   const area = "Dentista";
   const fecha = new Date();
+  const password = "testdecontraseña"
 
   const response = await fetch("/pacient/regis-pacient", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ fullName, dni, telefono, email, area, sintomas, diagnostico, tratamiento, fecha })
+    body: JSON.stringify({ fullName, dni, password, telefono, email, area, sintomas, diagnostico, tratamiento, fecha })
   });
 
   if (response.ok) {
@@ -216,4 +217,3 @@ async function downloadPatientHistory() {
   // Descarga el PDF
   doc.save(`Historial_${nombre}.pdf`);
 }
-
