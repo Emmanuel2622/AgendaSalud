@@ -32,13 +32,14 @@ async function addPacient() {
 // Buscar paciente
 async function searchPaciente() {
   const dni = document.getElementById("dniBuscar").value;
+  const password = "testdecontraseña"
   try {
     const response = await fetch('/pacient/get-data-pacient', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ dni })
+      body: JSON.stringify({ dni, password })
     });
 
     if (!response.ok) {
@@ -46,7 +47,6 @@ async function searchPaciente() {
     }
     const data = await response.json();
     console.log('Datos del paciente:', data);
-
 
     document.getElementById('menu').style.display = 'none';
     document.getElementById('registrarPaciente').style.display = 'none';

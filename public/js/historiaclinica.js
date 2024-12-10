@@ -1,7 +1,7 @@
 // Buscar paciente
 async function searchPaciente() {
-    const dni = document.getElementById("dniBuscar").value;
-    const passwdord = "testdecontraseña"
+    const dni = document.getElementById("indni").value;
+    const password = document.getElementById("passwd").value;
     try {
       const response = await fetch('/pacient/get-data-pacient', {
         method: 'POST',
@@ -17,37 +17,31 @@ async function searchPaciente() {
       const data = await response.json();
       console.log('Datos del paciente:', data);
 
-
-      document.getElementById('menu').style.display = 'none';
-      document.getElementById('registrarPaciente').style.display = 'none';
-      document.getElementById('buscarPaciente').style.display = 'none';
-      document.getElementById('saveDataPacient').style.display = 'block';
+      document.getElementById('windowsHistoriaClinica').style.display = 'block';
+      document.getElementById('windowSearchHC').style.display = 'none';
 
       document.getElementById('nombrePaciente').innerText = data.fullName;
       document.getElementById('telefonoPaciente').innerText = data.telefono;
       document.getElementById('emailPaciente').innerText = data.email;
       document.getElementById('dniPaciente').innerText = data.dni;
 
-      // Cargar datos en ventana modal
-      document.getElementById("namePaciente").innerText = data.fullName;
-        const bodyModal = document.getElementById("bodyModal");
+      const info = document.getElementById("info");
 
-        // Limpiar el contenido previo
-        bodyModal.innerHTML = '';
+      // Limpiar el contenido previo
+      info.innerHTML = '';
 
-        // Renderizar el historial por fecha
-        data.history.forEach((entry) => {
-          bodyModal.innerHTML += `
-                  <div class="historial-entry">
-                      <p><strong>Fecha:</strong> ${entry.fecha}</p>
-                      <p><strong>Síntomas:</strong> ${entry.sintomas}</p>
-                      <p><strong>Diagnóstico:</strong> ${entry.diagnostico}</p>
-                      <p><strong>Tratamiento:</strong> ${entry.tratamiento}</p>
-                      <hr>
-                  </div>
-              `;
-        });
-
+      // Renderizar el historial por fecha
+      data.history.forEach((entry) => {
+        info.innerHTML += `
+                <div class="historial-entry">
+                    <p><strong class="text-black">Fecha:</strong> ${entry.fecha}</p>
+                    <p><strong class="text-black">Síntomas:</strong> ${entry.sintomas}</p>
+                    <p><strong class="text-black">Diagnóstico:</strong> ${entry.diagnostico}</p>
+                    <p><strong class="text-black">Tratamiento:</strong> ${entry.tratamiento}</p>
+                    <hr>
+                </div>
+            `;
+      });
     } catch (error) {
       alert("No hay paciente");
       console.error(error.message);
