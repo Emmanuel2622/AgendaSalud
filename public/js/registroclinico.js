@@ -1,3 +1,13 @@
+function generarContrasena(longitud) {
+    const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%";
+    let contrasena = "";
+    for (let i = 0; i < longitud; i++) {
+        const indice = Math.floor(Math.random() * caracteres.length);
+        contrasena += caracteres.charAt(indice);
+    }
+    return contrasena;
+}
+
 // Registrar paciente
 async function addPacient() {
   const fullName = document.getElementById("nombre").value;
@@ -7,17 +17,36 @@ async function addPacient() {
   const sintomas = document.getElementById("sintomas").value;
   const diagnostico = document.getElementById("diagnostico").value;
   const tratamiento = document.getElementById("tratamiento").value;
-  const area = "Dentista";
   const fecha = new Date();
-  const password = "testdecontraseña"
+  const password = generarContrasena(8)
+  const user = await fetch('/api/user');
+  const userData = await user.json();
+  const profesional = userData.fullName;
 
-  const response = await fetch("/pacient/regis-pacient", {
+  // Obtener Area del prof
+const responseArea = await fetch('/auth/get-area', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email: userData.email }),
+});
+const dataArea = await responseArea.json();
+
+if (!responseArea.ok) {
+    console.error('Error:', dataArea.error);
+    throw new Error('No se pudo obtener el área');
+}
+const area = dataArea.area;
+
+// Registrar Paciente
+const response = await fetch("/pacient/regis-pacient", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+        "Content-Type": "application/json",
     },
-    body: JSON.stringify({ fullName, dni, password, telefono, email, area, sintomas, diagnostico, tratamiento, fecha })
-  });
+    body: JSON.stringify({ fullName, dni, password, telefono, email, area, profesional, sintomas, diagnostico, tratamiento, fecha })
+});
 
   if (response.ok) {
     alert("Cliente registrado");
@@ -26,13 +55,12 @@ async function addPacient() {
     const errorData = await response.json();
     alert(errorData.error || "Error en el registro.");
   }
-
 };
 
 // Buscar paciente
 async function searchPaciente() {
   const dni = document.getElementById("dniBuscar").value;
-  const password = "testdecontraseña"
+  const password = document.getElementById("password").value;
   try {
     const response = await fetch('/pacient/get-data-pacient', {
       method: 'POST',

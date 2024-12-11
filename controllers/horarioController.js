@@ -8,17 +8,20 @@ exports.saveHours = async (req, res) => {
     }
 
     try {
-        let UsersHorarios = await UsersHorario.findOne({ fullName });
+        let UsersHorarios = await UsersHorario.findOneAndUpdate(
+          { fullName },
+          { startHour },
+          { endHour },
+          {new: true}
+        );
 
-        if (UsersHorarios) {
-            UsersHorarios.startHour = startHour;
-            UsersHorarios.endHour = endHour;
-        } else {
-            UsersHorarios = new UsersHorarios({ fullName, startHour, endHour });
+        if (!UsersHorarios){
+          //UsersHorarios = new UsersHorarios({ fullName, startHour, endHour });
+          return res.status(404).json({ error: 'Usuario no encontrado' });
+
         }
 
-        await UsersHorarios.save();
-        res.json({ success: true, message: 'Horarios guardados correctamente.' });
+        res.status(200).json({ success: true, message: 'Horarios guardados correctamente.' });
     } catch (err) {
         console.error('Error al guardar los horarios:', err);
         res.status(500).json({ error: 'Error al guardar los horarios.' });

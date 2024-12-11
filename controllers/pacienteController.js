@@ -1,7 +1,7 @@
 const Patient = require('../models/Paciente');
 
 exports.regisPacient = async (req, res) => {
-    const { fullName, email, password, dni, telefono, sintomas, diagnostico, tratamiento, fecha, area } = req.body;
+    const { fullName, email, password, dni, telefono, sintomas, diagnostico, tratamiento, fecha, area, profesional } = req.body;
 
     try {
         const newPatients = new Patient({
@@ -14,7 +14,8 @@ exports.regisPacient = async (req, res) => {
             diagnostico,
             tratamiento,
             fecha,
-            area
+            area,
+            profesional
         });
 
         await newPatients.save();

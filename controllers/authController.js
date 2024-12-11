@@ -144,20 +144,21 @@ exports.saveDesc = async (req, res) => {
     const { email, descripcion } = req.body;
 
     try {
-        // Busca al usuario por el correo electrónico
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-
         // Verificar si el valor de la Descripcion es válido (puedes adaptar esto según tu lógica)
         if (!descripcion || typeof descripcion !== 'string' || descripcion.trim() === '') {
             return res.status(400).json({ error: 'Descripcion no válida' });
         }
 
-        // Asignar el valor de la Descripcion al usuario
-        user.descripcion = descripcion;
-        await user.save();  // Guardar los cambios en la base de datos
+        // Actualizar el campo descripcion del usuario
+        const user = await User.findOneAndUpdate(
+          { email },
+          { descripcion },
+          { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
 
         res.status(200).json({ message: 'Descripcion asignada exitosamente', descripcion });
     } catch (error) {
@@ -195,20 +196,22 @@ exports.savePrecio = async (req, res) => {
     const { email, precio } = req.body;
 
     try {
-        // Busca al usuario por el correo electrónico
-        const user = await User.findOne({ email });
+        // Verificar si el valor del Precio es válido (puedes adaptar esto según tu lógica)
+        if (!precio || typeof precio !== 'string' || precio.trim() === '') {
+          return res.status(400).json({ error: 'Precio no válido' });
+        }
+
+
+        // Actualiza el campo Precio del usuario
+        const user = await User.findOneAndUpdate(
+          { email },
+          { precio },
+          { new: true }
+        );
+
         if (!user) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
-
-        // Verificar si el valor del Precio es válido (puedes adaptar esto según tu lógica)
-        if (!precio || typeof precio !== 'string' || precio.trim() === '') {
-            return res.status(400).json({ error: 'Precio no válido' });
-        }
-
-        // Asignar el valor del Precio al usuario
-        user.precio = precio;
-        await user.save();  // Guardar los cambios en la base de datos
 
         res.status(200).json({ message: 'Precio asignado exitosamente', precio });
     } catch (error) {
@@ -241,31 +244,32 @@ exports.getPrecio = async (req, res) => {
 };
 
 // Direccion
-
 exports.saveDirec = async (req, res) => {
     const { email, direccion } = req.body;
 
     try {
-        // Busca al usuario por el correo electrónico
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-
-        // Verificar si el valor de la Direccion es válido (puedes adaptar esto según tu lógica)
+        // Verificar si el valor de la direccion es válido
         if (!direccion || typeof direccion !== 'string' || direccion.trim() === '') {
             return res.status(400).json({ error: 'Direccion no válida' });
         }
 
-        // Asignar el valor de la Direccion al usuario
-        user.direccion = direccion;
-        await user.save();  // Guardar los cambios en la base de datos
+        // Actualizar el campo direccion del usuario
+        const user = await User.findOneAndUpdate(
+            { email }, // Filtro para encontrar al usuario por email
+            { direccion }, // Campo a actualizar
+            { new: true } // Retorna el documento actualizado
+        );
 
-        res.status(200).json({ message: 'Direccion asignada exitosamente', direccion });
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        res.status(200).json({ message: 'Direccion asignada exitosamente', user });
     } catch (error) {
         res.status(500).json({ error: 'Error al asignar la Direccion', details: error.message });
     }
 };
+
 
 exports.getDirec = async (req, res) => {
     try {
@@ -297,20 +301,21 @@ exports.saveCalenID = async (req, res) => {
     const { email, calendarid } = req.body;
 
     try {
-        // Busca al usuario por el correo electrónico
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-
         // Verificar si el valor de el calendarid es válido (puedes adaptar esto según tu lógica)
         if (!calendarid || typeof calendarid !== 'string' || calendarid.trim() === '') {
-            return res.status(400).json({ error: 'Direccion no válida' });
+            return res.status(400).json({ error: 'CalendarID no válida' });
         }
 
-        // Asignar el valor de el calendarid al usuario
-        user.calendarid = calendarid;
-        await user.save();  // Guardar los cambios en la base de datos
+        // Actualiza el campo CalendarID del usuario
+        const user = await User.findOneAndUpdate(
+          { email },
+          { calendarid },
+          {new: true }
+        );
+
+        if (!user) {
+          return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
 
         res.status(200).json({ message: 'Id calendar asignada exitosamente', calendarid });
     } catch (error) {

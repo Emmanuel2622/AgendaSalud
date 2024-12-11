@@ -4,13 +4,15 @@ const { type } = require('os');
 const userSchema = new mongoose.Schema({
     fullName: {
         type: String,
-        required: true,
+        required: false,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true,
-    },
+    type: String,
+    required: false,
+    unique: true,
+    match: [/^\S+@\S+\.\S+$/, 'Por favor ingresa un correo válido'],
+  },
+
     dni: {
         type: Number,
         required: true,
@@ -18,7 +20,7 @@ const userSchema = new mongoose.Schema({
     },
     telefono: {
         type: Number,
-        required: true,
+        required: false,
     },
     password: {
         type: String,
@@ -38,7 +40,7 @@ const userSchema = new mongoose.Schema({
     },
     area:{
         type: String,
-        require: true
+        require: false
     },
     descripcion:{
         type: String,
