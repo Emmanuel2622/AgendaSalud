@@ -78,7 +78,7 @@
   </div>
 
   <!-- Registro Paciente -->
-  <div class="container mt-5" id="registrarPaciente" style="display: none;">
+  <div class="container mt-5" id="registrarPaciente" style="display: block;">
     <h2 class="mb-4 active">Registrar Paciente</h2>
     <!-- Controles del carrusel -->
     <div class="d-flex justify-content-between mt-3">
@@ -96,26 +96,63 @@
       <div class="carousel-inner">
         <!-- Sección 1: Información personal -->
         <div class="carousel-item active">
-          <div class="mb-3">
-            <label for="nombre" class="form-label"><i class="fas fa-user"></i> Nombre Completo</label>
-            <input type="text" class="form-control" id="nombre" placeholder="Ingresa el nombre completo" required>
+          <div class="row p-2">
+            <div class="mb-3 col-sm">
+              <label for="nombre" class="form-label"><i class="fas fa-user"></i> Nombre Completo</label>
+              <input type="text" class="form-control" id="nombre" placeholder="Ingresa el nombre completo" required>
+            </div>
+
+            <div class="mb-3 col-sm">
+              <label for="dni" class="form-label"><i class="fas fa-id-card"></i> DNI</label>
+              <input type="number" class="form-control" id="dni" placeholder="Ingresa el número de documento" required>
+            </div>
           </div>
 
-          <div class="mb-3">
-            <label for="dni" class="form-label"><i class="fas fa-id-card"></i> DNI</label>
-            <input type="number" class="form-control" id="dni" placeholder="Ingresa el número de documento" required>
-          </div>
-
-          <div class="mb-3">
-            <label for="telefono" class="form-label"><i class="fas fa-phone"></i> Teléfono</label>
-            <input type="number" class="form-control" id="telefono" placeholder="Ingresa el número de teléfono"
+          <div class="row p-2">
+            <div class="mb-3 col-sm">
+              <label for="telefono" class="form-label"><i class="fas fa-phone"></i> Teléfono</label>
+              <input type="number" class="form-control" id="telefono" placeholder="Ingresa el número de teléfono"
               required>
+            </div>
+
+            <div class="mb-3 col-sm">
+              <label for="email" class="form-label"><i class="fas fa-envelope"></i> Correo Electrónico</label>
+              <input type="email" class="form-control" id="email" placeholder="Ingresa el email electrónico" required>
+            </div>
           </div>
 
-          <div class="mb-3">
-            <label for="email" class="form-label"><i class="fas fa-envelope"></i> Correo Electrónico</label>
-            <input type="email" class="form-control" id="email" placeholder="Ingresa el email electrónico" required>
+          <div class="row p-2">
+            <div class="mb-3 col-sm">
+              <label for="sexo" class="form-label"><i class="fas fa-phone"></i> Sexo</label>
+              <input type="" class="form-control" id="sexo" placeholder="Ingrese el sexo"
+              required>
+            </div>
+
+            <div class="mb-3 col-sm">
+              <label for="direccion" class="form-label"><i class="fa-solid fa-location-dot"></i> Direccion</label>
+              <input type="text" class="form-control" id="direccion" placeholder="Ingresa la direccion" required>
+            </div>
           </div>
+
+          <div class="row p-2">
+            <div class="mb-3 col-sm">
+              <label for="fechaNacimiento" class="form-label"><i class="fa-solid fa-calendar-days"></i> Fecha de nacimiento</label>
+              <input type="date" class="form-control" id="fechaNacimiento" placeholder="Ingrese la fecha de nacimiento"
+              required>
+            </div>
+
+            <div class="mb-3 col-sm">
+              <label for="edad" class="form-label"><i class="fas fa-phone"></i> Edad</label>
+              <input type="number" class="form-control" id="edad" placeholder="Ingrese la edad"
+              required>
+            </div>
+
+            <div class="mb-3 col-sm">
+              <label for="obraSocial" class="form-label"><i class="fas fa-envelope"></i> Obra Social</label>
+              <input type="text" class="form-control" id="obraSocial" placeholder="Ingrese la Obra Social" required>
+            </div>
+          </div>
+
         </div>
 
         <!-- Sección 2: Información médica -->
@@ -149,15 +186,60 @@
     <button type="button" id="volver-reg" class="btn btn-celeste text-white me-2">Volver</button>
   </div>
 
-  <!-- Guardar Datos Paciente -->
+  <!-- Datos Paciente -->
   <div class="container mt'5 active" id="saveDataPacient" style="display: none;">
     <div id="resultadoPaciente">
       <h2>Información del Paciente</h2>
       <hr class="mb-4">
-      <p><strong>Nombre:</strong> <span id="nombrePaciente"></span></p>
-      <p><strong>Teléfono:</strong> <span id="telefonoPaciente"></span></p>
-      <p><strong>DNI:</strong> <span id="dniPaciente"></span></p>
-      <p><strong>Email:</strong> <span id="emailPaciente"></span></p>
+
+      <div class="border border-2 rounded p-3 mb-3">
+        <div class="row">
+          <div class="col">
+            <p><strong>Nombre:</strong> <span id="nombrePaciente"></span></p>
+          </div>
+          <div class="col">
+            <p><strong>Teléfono:</strong> <span id="telefonoPaciente"></span></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <p><strong>DNI:</strong> <span id="dniPaciente"></span></p>
+          </div>
+          <div class="col">
+            <p><strong>Email:</strong> <span id="emailPaciente"></span></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <p><strong>Sexo:</strong> <span id="sexoPaciente"></span></p>
+          </div>
+          <div class="col">
+            <p><strong>Direccion:</strong> <span id="direcPaciente"></span></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <p><strong>Fecha de Nacimiento:</strong> <span id="fechaNacimientoPaciente"></span></p>
+          </div>
+          <div class="col">
+            <p><strong>Obra Social:</strong> <span id="osPaciente"></span></p>
+          </div>
+        </div>
+
+          <div class="row">
+            <div class="col">
+              <p><strong>Edad:</strong> <span id="edadPaciente"></span></p>
+            </div>
+            <div class="col">
+              <p><strong>Fecha de apertura de la historia clínica:</strong> <span id="fechaAperturaPaciente"></span></p>
+            </div>
+        </div>
+
+      </div>
+
       <button class="btn btn-celeste text-white" data-bs-toggle="modal" data-bs-target="#historialModal"><i
           class="fa-solid fa-clock-rotate-left"></i> Historial</button>
     </div>

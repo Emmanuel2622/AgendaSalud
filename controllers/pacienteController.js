@@ -77,7 +77,9 @@ exports.data = async (req, res) => {
             }),
             sintomas: pacient.sintomas[index],
             diagnostico: pacient.diagnostico[index],
-            tratamiento: pacient.tratamiento[index]
+            tratamiento: pacient.tratamiento[index],
+            area: pacient.area[index],
+            profesional: pacient.profesional[index]
         }));
 
         res.status(200).json({
@@ -85,7 +87,6 @@ exports.data = async (req, res) => {
             dni: pacient.dni,
             telefono: pacient.telefono,
             email: pacient.email,
-            area: pacient.area,
             history: formattedHistory
         });
     } catch (error) {

@@ -97,6 +97,9 @@ async function searchPaciente() {
       data.history.forEach((entry) => {
         bodyModal.innerHTML += `
                 <div class="historial-entry">
+                    <p><strong>Profesional:</strong> ${entry.profesional}</p>
+                    <p><strong>Area:</strong> ${entry.area}</p>
+
                     <p><strong>Fecha:</strong> ${entry.fecha}</p>
                     <p><strong>Síntomas:</strong> ${entry.sintomas}</p>
                     <p><strong>Diagnóstico:</strong> ${entry.diagnostico}</p>
@@ -118,15 +121,34 @@ async function saveDataPaciente() {
   const sintomas = document.getElementById("save-sintomas").value;
   const diagnostico = document.getElementById("save-diagnostico").value;
   const tratamiento = document.getElementById("save-tratamiento").value;
-  const area = "Dentista";
   const fecha = new Date();
+  const user = await fetch('/api/user');
+  const userData = await user.json();
+  const profesional = userData.fullName;
+
+    // Obtener Area del prof
+  const responseArea = await fetch('/auth/get-area', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: userData.email }),
+  });
+  const dataArea = await responseArea.json();
+
+  if (!responseArea.ok) {
+      console.error('Error:', dataArea.error);
+      throw new Error('No se pudo obtener el área');
+  }
+  const area = dataArea.area;
+
 
   const response = await fetch("/pacient/save-data-pacient", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ dni, area, sintomas, diagnostico, tratamiento, fecha })
+    body: JSON.stringify({ dni, area, profesional, sintomas, diagnostico, tratamiento, fecha })
   });
 
   if (response.ok) {
@@ -235,7 +257,7 @@ async function downloadPatientHistory() {
           doc.setFont("helvetica", "normal");
           doc.setFontSize(12);
           doc.text(line, 10, yPosition);
-          yPosition += 10; // Espacio entre las líneas de texto
+          yPosition += 8; // Espacio entre las líneas de texto
       }
   });
 
