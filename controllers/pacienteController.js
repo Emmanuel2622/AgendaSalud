@@ -1,15 +1,29 @@
 const Patient = require('../models/Paciente');
 
 exports.regisPacient = async (req, res) => {
-    const { fullName, email, password, dni, telefono, sintomas, diagnostico, tratamiento, fecha, area, profesional } = req.body;
+    const { fullName, email, password, dni, telefono, sexo, direccion, fechaNacimiento, fechaApertura, edad, obraSocial, fechaApertura, sintomas, diagnostico, tratamiento, fecha, area, profesional } = req.body;
 
     try {
+      fechaApertura = new Date(fecha).toLocaleString("es-AR", {
+          day: "numeric",
+          month: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric"
+      });
+
         const newPatients = new Patient({
             fullName,
             email,
             password,
             dni,
             telefono,
+            sexo,
+            direccion,
+            fechaNacimiento,
+            edad,
+            obraSocial,
+            fechaApertura,
             sintomas,
             diagnostico,
             tratamiento,

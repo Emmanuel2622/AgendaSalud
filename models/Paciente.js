@@ -23,6 +23,31 @@ const pacienteSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    sexo: {
+      type: String,
+      required: false
+    },
+    direccion: {
+      type: String,
+      required: false
+    },
+    fechaNacimiento: {
+      type: String,
+      required: false
+    },
+    edad: {
+      type: String,
+      required: false
+    },
+    obraSocial: {
+      type: String,
+      required: false
+    },
+    fechaApertura: {
+      type: String,
+      required: false
+    },
+
     sintomas: {
         type: [String],
         required: true
