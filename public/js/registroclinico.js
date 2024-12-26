@@ -14,9 +14,17 @@ async function addPacient() {
   const dni = document.getElementById("dni").value;
   const telefono = document.getElementById("telefono").value;
   const email = document.getElementById("email").value;
+  const sexo = document.getElementById("tratamiento").value;
+  const direccion = document.getElementById("direccion").value;
+  const fechaNacimiento = document.getElementById("fechaNacimiento").value;
+  const edad = document.getElementById("edad").value;
+  const obraSocial = document.getElementById("obraSocial").value;
+
   const sintomas = document.getElementById("sintomas").value;
   const diagnostico = document.getElementById("diagnostico").value;
   const tratamiento = document.getElementById("tratamiento").value;
+
+
   const fecha = new Date();
   const password = generarContrasena(8)
   const user = await fetch('/api/user');
@@ -45,7 +53,7 @@ const response = await fetch("/pacient/regis-pacient", {
     headers: {
         "Content-Type": "application/json",
     },
-    body: JSON.stringify({ fullName, dni, password, telefono, email, area, profesional, sintomas, diagnostico, tratamiento, fecha })
+    body: JSON.stringify({ fullName, dni, password, telefono, email, sexo, direccion, fechaNacimiento, edad, obraSocial, area, profesional, sintomas, diagnostico, tratamiento, fecha })
 });
 
   if (response.ok) {
@@ -85,6 +93,12 @@ async function searchPaciente() {
     document.getElementById('telefonoPaciente').innerText = data.telefono;
     document.getElementById('emailPaciente').innerText = data.email;
     document.getElementById('dniPaciente').innerText = data.dni;
+    document.getElementById('sexoPaciente').innerHTML = data.sexo;
+    document.getElementById('direcPaciente').innerHTML = data.direccion;
+    document.getElementById('fechaNacimientoPaciente').innerHTML = data.fechaNacimiento;
+    document.getElementById('edadPaciente').innerHTML = data.edad;
+    document.getElementById('osPaciente').innerHTML = data.obraSocial;
+    document.getElementById('fechaAperturaPaciente').innerHTML = data.fechaApertura;
 
     // Cargar datos en ventana modal
     document.getElementById("namePaciente").innerText = data.fullName;
