@@ -30,6 +30,14 @@ async function searchPaciente() {
       document.getElementById('telefonoPaciente').innerText = data.telefono;
       document.getElementById('emailPaciente').innerText = data.email;
       document.getElementById('dniPaciente').innerText = data.dni;
+      document.getElementById('direccionPaciente').innerText = data.direccion;
+      document.getElementById('fechaNacimiento').innerText = data.fechaNacimiento;
+      document.getElementById('edadPaciente').innerText = data.edad;
+      document.getElementById('obraSocialPaciente').innerText = data.obraSocial;
+      document.getElementById('sexoPaciente').innerText = data.sexo;
+      document.getElementById('fechaAperturaPaciente').innerText = data.fechaApertura;
+
+
 
       const info = document.getElementById("info");
 

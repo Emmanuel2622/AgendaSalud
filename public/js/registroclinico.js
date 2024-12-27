@@ -14,7 +14,7 @@ async function addPacient() {
   const dni = document.getElementById("dni").value;
   const telefono = document.getElementById("telefono").value;
   const email = document.getElementById("email").value;
-  const sexo = document.getElementById("tratamiento").value;
+  const sexo = document.getElementById("sexo").value;
   const direccion = document.getElementById("direccion").value;
   const fechaNacimiento = document.getElementById("fechaNacimiento").value;
   const edad = document.getElementById("edad").value;
@@ -199,6 +199,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('menu').style.display = 'block';
     document.getElementById('registrarPaciente').style.display = 'none';
     document.getElementById('buscarPaciente').style.display = 'none';
+  });
+
+  document.getElementById('volver-his').addEventListener('click', function () {
+    document.getElementById('menu').style.display = 'block';
+    document.getElementById('saveDataPacient').style.display = 'none';
   });
 
 });

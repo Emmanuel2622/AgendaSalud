@@ -106,6 +106,7 @@ exports.data = async (req, res) => {
             fechaNacimiento: pacient.fechaNacimiento,
             edad: pacient.edad,
             obraSocial: pacient.obraSocial,
+            sexo: pacient.sexo,
             fechaApertura: pacient.fechaApertura,
             history: formattedHistory
         });

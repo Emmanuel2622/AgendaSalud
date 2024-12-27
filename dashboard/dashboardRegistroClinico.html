@@ -46,14 +46,12 @@
     </div>
   </nav>
 
-
-  <div class="text-center container">
-    <h2 class="text-azul mb-4">Registro Clínico</h2>
-    <hr class="mb-4">
-
-  </div>
-
   <div class="container" id="menu">
+    <div class="text-center container" id="title">
+      <h2 class="text-azul mb-4">Registro Clínico</h2>
+      <hr class="mb-4">
+    </div>
+  
     <div class="row">
       <button class="col btn btn-celeste m-4 text-white" id="select-1">Buscar Paciente</button>
       <button class="col btn btn-celeste m-4 text-white" id="select-2">Registrar Paciente</button>
@@ -62,7 +60,8 @@
 
   <!-- Buscar Paciente -->
   <div class="container active" id="buscarPaciente" style="display: none;">
-    <h2 class="my-4 mb-4">Buscar Paciente</h2>
+    <h2 class="my-4 mb-4 text-azul">Buscar Paciente</h2>
+    <hr class="mb-4">
     <div class="mb-3">
       <label for="dniBuscar" class="form-label"><i class="fas fa-id-card"></i> DNI del paciente</label>
       <input type="number" class="form-control" id="dniBuscar" placeholder="Ingresa el DNI" required><br />
@@ -70,7 +69,9 @@
       <label for="password" class="form-label"><i class="fas fa-id-card"></i> Contraseña</label>
       <input type="text" class="form-control" id="password" placeholder="Ingresa la Contraseña" required><br />
 
-      <button type="button" id="volver-bus" class="btn btn-celeste text-white me-2">Volver</button>
+      <button type="button" id="volver-bus" class="btn btn-celeste text-white me-2">
+        <i class="fa-solid fa-angle-left"></i> Volver
+      </button>
       <button id="buscar" type="button" class="btn btn-celeste text-white" onclick="searchPaciente()">
         <i class="fa-solid fa-magnifying-glass me-2"></i></i>Buscar Paciente
       </button>
@@ -78,8 +79,10 @@
   </div>
 
   <!-- Registro Paciente -->
-  <div class="container mt-5" id="registrarPaciente" style="display: none;">
-    <h2 class="mb-4 active">Registrar Paciente</h2>
+  <div class="container mt-5 border shadow rounded p-4" id="registrarPaciente" style="display: none;">
+    <h2 class="mb-4 text-azul">Registrar Paciente</h2>
+    <hr class="mb-4">
+
     <!-- Controles del carrusel -->
     <div class="d-flex justify-content-between mt-3">
       <button class="btn btn-celeste text-white" type="button" data-bs-target="#registroClinicoCarrusel"
@@ -124,8 +127,11 @@
           <div class="row p-2">
             <div class="mb-3 col-sm">
               <label for="sexo" class="form-label"><i class="fas fa-phone"></i> Sexo</label>
-              <input type="" class="form-control" id="sexo" placeholder="Ingrese el sexo"
-              required>
+              <select id="sexo" name="sexo" required class="form-select">
+                <option value="">Elija una opcion</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+              </select>
             </div>
 
             <div class="mb-3 col-sm">
@@ -149,7 +155,10 @@
 
             <div class="mb-3 col-sm">
               <label for="obraSocial" class="form-label"><i class="fas fa-envelope"></i> Obra Social</label>
-              <input type="text" class="form-control" id="obraSocial" placeholder="Ingrese la Obra Social" required>
+              <select id="obraSocial" name="obraSocial" required class="form-select">
+                <option value="Particular">Particular</option>
+                <option value="">....</option>
+              </select>
             </div>
           </div>
 
@@ -183,58 +192,60 @@
       </div>
     </div><br />
 
-    <button type="button" id="volver-reg" class="btn btn-celeste text-white me-2">Volver</button>
+    <button type="button" id="volver-reg" class="btn btn-celeste text-white me-2">
+      <i class="fa-solid fa-angle-left"></i> Volver
+    </button>
   </div>
 
   <!-- Datos Paciente -->
-  <div class="container mt'5 active" id="saveDataPacient" style="display: none;">
+  <div class="container mt-4 border shadow rounded p-4" id="saveDataPacient" style="display: none;">
     <div id="resultadoPaciente">
-      <h2>Información del Paciente</h2>
+      <h2 class="text-azul">Información del Paciente</h2>
       <hr class="mb-4">
 
-      <div class="border border-2 rounded p-3 mb-3">
+      <div class="p-3 mb-3">
         <div class="row">
           <div class="col">
-            <p><strong>Nombre:</strong> <span id="nombrePaciente"></span></p>
+            <p><strong class="text-azul">Nombre:</strong> <span id="nombrePaciente"></span></p>
           </div>
           <div class="col">
-            <p><strong>Teléfono:</strong> <span id="telefonoPaciente"></span></p>
+            <p><strong class="text-azul">Teléfono:</strong> <span id="telefonoPaciente"></span></p>
           </div>
         </div>
 
         <div class="row">
           <div class="col">
-            <p><strong>DNI:</strong> <span id="dniPaciente"></span></p>
+            <p><strong class="text-azul">DNI:</strong> <span id="dniPaciente"></span></p>
           </div>
           <div class="col">
-            <p><strong>Email:</strong> <span id="emailPaciente"></span></p>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <p><strong>Sexo:</strong> <span id="sexoPaciente"></span></p>
-          </div>
-          <div class="col">
-            <p><strong>Direccion:</strong> <span id="direcPaciente"></span></p>
+            <p><strong class="text-azul">Email:</strong> <span id="emailPaciente"></span></p>
           </div>
         </div>
 
         <div class="row">
           <div class="col">
-            <p><strong>Fecha de Nacimiento:</strong> <span id="fechaNacimientoPaciente"></span></p>
+            <p><strong class="text-azul">Sexo:</strong> <span id="sexoPaciente"></span></p>
           </div>
           <div class="col">
-            <p><strong>Obra Social:</strong> <span id="osPaciente"></span></p>
+            <p><strong class="text-azul">Direccion:</strong> <span id="direcPaciente"></span></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <p><strong class="text-azul">Fecha de Nacimiento:</strong> <span id="fechaNacimientoPaciente"></span></p>
+          </div>
+          <div class="col">
+            <p><strong class="text-azul">Obra Social:</strong> <span id="osPaciente"></span></p>
           </div>
         </div>
 
           <div class="row">
             <div class="col">
-              <p><strong>Edad:</strong> <span id="edadPaciente"></span></p>
+              <p><strong class="text-azul">Edad:</strong> <span id="edadPaciente"></span></p>
             </div>
             <div class="col">
-              <p><strong>Fecha de apertura de la historia clínica:</strong> <span id="fechaAperturaPaciente"></span></p>
+              <p><strong class="text-azul">Fecha de apertura de la historia clínica:</strong> <span id="fechaAperturaPaciente"></span></p>
             </div>
         </div>
 
@@ -244,7 +255,7 @@
           class="fa-solid fa-clock-rotate-left"></i> Historial</button>
     </div>
     <hr class="mb-4">
-    <div>
+    <div class="text-azul">
       <div class="mb-3">
         <label for="save-sintomas" class="form-label"><i class="fas fa-stethoscope"></i> Síntomas</label>
         <textarea class="form-control" id="save-sintomas" rows="3"
@@ -263,7 +274,10 @@
           placeholder="Describe el tratamiento recomendado"></textarea>
       </div>
       <!-- Botón de enviar -->
-      <button type="submit" class="btn btn-primary w-100" onclick="saveDataPaciente()">
+      <button type="button" class="btn btn-celeste text-white me-2" id="volver-his">
+        <i class="fa-solid fa-angle-left"></i> Volver
+      </button>
+      <button type="button" class="btn btn-celeste text-white" onclick="saveDataPaciente()">
         <i class="fas fa-check"></i> Guardar
       </button>
     </div>
