@@ -57,11 +57,25 @@ const response = await fetch("/pacient/regis-pacient", {
 });
 
   if (response.ok) {
-    alert("Cliente registrado");
-    location.reload();
+    Swal.fire({
+      title: "Paciente Registrado con Exito",
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Ok!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          location.reload()
+        }
+      });
   } else {
     const errorData = await response.json();
-    alert(errorData.error || "Error en el registro.");
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: `Paciente no registrado: ${errorData.error}`,
+      footer: '<a href="https://wa.me/2615930274">Ayuda</a>'
+    });
+    //alert(errorData.error || "Error en el registro.");
   }
 };
 
@@ -124,7 +138,13 @@ async function searchPaciente() {
       });
 
   } catch (error) {
-    alert("No hay paciente");
+    Swal.fire({
+      icon: "error",
+    //  title: "Oops...",
+      title: "Datos Incorrectos",
+      text: "Asegurate de que el paciente este registrado",
+      timer: 3000
+    });
     console.error(error.message);
   }
 }
@@ -166,11 +186,26 @@ async function saveDataPaciente() {
   });
 
   if (response.ok) {
-    alert("Datos de Paciente Cargados con exito");
-    location.reload();
+    // Mostrar el modal de éxito
+    Swal.fire({
+      title: "Turno Agendado con Exito",
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Ok!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          location.reload()
+        }
+      });
   } else {
     const errorData = await response.json();
-    alert(errorData.error || "Error al cargar los datos del paciente.");
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: `Paciente no registrado: ${errorData.error}`,
+      footer: '<a href="https://wa.me/2615930274">Ayuda</a>'
+    });
+    //alert(errorData.error || "Error al cargar los datos del paciente.");
   }
 }
 

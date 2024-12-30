@@ -17,6 +17,7 @@ fetch('http://localhost:3000/api/get-hours')
     });
 
 function handleFormSubmit(event) {
+  try {
     event.preventDefault();
     const name = document.getElementById('patientName').value;
     const email = document.getElementById('email').value;
@@ -54,20 +55,51 @@ function handleFormSubmit(event) {
                 document.getElementById('appointmentDate').value = '';
                 document.getElementById('available-slots').value = '';
                 // Mostrar el modal de éxito
-                const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-                successModal.show();
+                Swal.fire({
+                  title: "Turno Agendado con Exito",
+                  icon: "success",
+                  confirmButtonColor: "#3085d6",
+                  confirmButtonText: "Ok!"
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      location.reload()
+                    }
+                  });
+                //const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                //successModal.show();
             } else {
                 // Mostrar el modal de error
-                const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-                errorModal.show();
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Turno no agendado",
+                  footer: '<a href="https://wa.me/2615930274">Ayuda</a>'
+                });
+                //const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                //errorModal.show();
             }
         })
         .catch(error => {
             console.error('Error al enviar la solicitud:', error);
             // Mostrar el modal de error en caso de fallo
-            const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-            errorModal.show();
+            // Mostrar el modal de error
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: `Turno no agendado: ${e.message}`,
+              footer: '<a href="https://wa.me/2615930274">Ayuda</a>'
+            });
+            //const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            //errorModal.show();
         });
+      } catch (e) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `Turno no agendado: ${e.message}`,
+          footer: '<a href="https://wa.me/2615930274">Ayuda</a>'
+        });
+      }
 }
 
 function getAvailableSlots(occupiedSlots, selectedDate, workHours) {
@@ -249,6 +281,8 @@ function updateAvailableSlots() {
     }
 }
 
+
+// Busca Turnos
 document.getElementById('searchAppointmentForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
@@ -270,9 +304,25 @@ document.getElementById('searchAppointmentForm').addEventListener('submit', func
             if (data.length > 0) {
                 data.forEach(appointment => {
                     const appointmentDiv = document.createElement('div');
+
+                    // Tratar la fecha
+                    const fecha = new Date(appointment.start.dateTime)
+                    fecha.setHours(fecha.getHours() - 3);
+                    const opciones = {
+                        weekday: 'long', // día de la semana
+                        year: 'numeric', // año
+                        month: 'long', // mes completo
+                        day: 'numeric', // día del mes
+                        hour: '2-digit', // hora con 2 dígitos
+                        minute: '2-digit', // minutos con 2 dígitos
+                        hour12: true // formato 12 horas (AM/PM)
+                    };
+                    const fechaFormateada = fecha.toLocaleString('es-ES', opciones);
                     appointmentDiv.innerHTML = `
-                        <p class="mt-4">Turno: ${appointment.summary} (${appointment.start.dateTime})</p>
-                        <button class="btn btn-celeste text-white" onclick="deleteAppointment('${appointment.id}')">Eliminar Turno</button>
+                    <div class="my-4 border-start border-primary pe-2">
+                      <p class="d-inline ms-3 me-3">Turno: ${fechaFormateada}</p>
+                      <button class="btn btn-danger text-white d-inline" onclick="deleteAppointment('${appointment.id}')"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
                     `;
                     appointmentsDiv.appendChild(appointmentDiv);
                 });
@@ -289,8 +339,16 @@ function deleteAppointment(eventId) {
     fetch(`http://localhost:3000/delete-appointment/${eventId}`, { method: 'DELETE' })
         .then(response => response.json())
         .then(data => {
-            alert('Turno eliminado');
-            location.reload(); // Recargar la página para actualizar la lista de turnos
+          Swal.fire({
+          title: "Turno eliminado con exito",
+          icon: "success",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Ok!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              location.reload()
+            }
+          });
         })
         .catch(error => console.error('Error al eliminar turno:', error));
 }

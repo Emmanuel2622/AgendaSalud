@@ -77,7 +77,13 @@ async function searchPaciente() {
             `;
       });
     } catch (error) {
-      alert("No hay paciente");
+      Swal.fire({
+        icon: "error",
+      //  title: "Oops...",
+        title: "Datos Incorrectos",
+        text: "Asegurate de que el paciente este registrado",
+        timer: 3000
+      });
       console.error(error.message);
     }
   }
