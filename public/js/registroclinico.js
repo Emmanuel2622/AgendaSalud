@@ -188,7 +188,7 @@ async function saveDataPaciente() {
   if (response.ok) {
     // Mostrar el modal de éxito
     Swal.fire({
-      title: "Turno Agendado con Exito",
+      title: "Turno Agendado con Éxito",
       icon: "success",
       confirmButtonColor: "#3085d6",
       confirmButtonText: "Ok!"

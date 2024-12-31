@@ -10,8 +10,7 @@ exports.saveHours = async (req, res) => {
     try {
         let UsersHorarios = await UsersHorario.findOneAndUpdate(
           { fullName },
-          { startHour },
-          { endHour },
+          { $set: { startHour, endHour } },
           {new: true}
         );
 

@@ -1,10 +1,3 @@
-// Mapa de profesionales a sus respectivos IDs de calendario
-    //'Carolina Denis': 'carolinadenisodonto@gmail.com',
-    //'Carlos Emmanuel Denis': '56229a1828f08bbee7cd9bb6becf23344af8bc19e1b45b5d75cbb8532ce41352@group.calendar.google.com',
-    //'test': '56229a1828f08bbee7cd9bb6becf23344af8bc19e1b45b5d75cbb8532ce41352@group.calendar.google.com',
-    // Agrega más profesionales y sus IDs de calendario aquí
-
-
 let CALENDAR_ID = ''; // Variable global para almacenar el ID del calendario seleccionado
 
 // Función para cargar las áreas y profesionales desde la base de datos
