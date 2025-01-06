@@ -4,7 +4,13 @@ exports.regisPacient = async (req, res) => {
     const { fullName, email, password, dni, telefono, sexo, direccion, fechaNacimiento, edad, obraSocial, fechaApertura, sintomas, diagnostico, tratamiento, fecha, area, profesional } = req.body;
 
     try {
-      let fechaApertura = ""
+      let fechaApertura = new Date(fecha).toLocaleString("es-AR", {
+          day: "numeric",
+          month: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric"
+      });
 
         const newPatients = new Patient({
             fullName,

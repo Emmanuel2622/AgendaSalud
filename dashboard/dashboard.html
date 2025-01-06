@@ -53,17 +53,25 @@
   <!-- Editar Perfil -->
   <section class="container my-4" id="perfilProf">
     <hr class="mb-4">
+
     <h2 class="text-azul-marino">Perfil Profesional</h2>
     <div class="card p-4 shadow-sm my-4">
-      <h3 class="card-title text-azul" id="name"></h3>
-      <p class="card-text" id="cont-descripcion"></p>
-      <ul class="list-unstyled">
-        <li><i class="fa-solid fa-user text-azul"></i></i> Area: <span id="Area"></span></li>
-        <li><i class="fa-solid fa-location-dot text-danger"></i> Dirección: <span id="cont-direccion"></span></li>
-        <li><i class="fa-solid fa-dollar-sign text-success"></i> Precio de la consulta: $<span id="cont-precio">0</span>
-        </li>
-        <li><i class="fa-solid fa-calendar-days text-azul"></i> Horarios de jornada: <span id="horarios"></span></li>
-      </ul>
+      <div class="row">
+        <div class="col-6 col-md-4">
+          <img src="../img/img-face.jpg" class="img-thumbnail rounded" alt="...">
+          <ul class="list-unstyled mt-3">
+            <li><i class="fa-solid fa-user text-azul"></i></i> Area: <span id="Area"></span></li>
+            <li><i class="fa-solid fa-location-dot text-danger"></i> Dirección: <span id="cont-direccion"></span></li>
+            <li><i class="fa-solid fa-dollar-sign text-success"></i> Precio de la consulta: $<span id="cont-precio">0</span>
+            </li>
+            <li><i class="fa-solid fa-calendar-days text-azul"></i> Horarios de jornada: <span id="horarios"></span></li>
+          </ul>
+        </div>
+        <div class="col-sm-6 col-md-8">
+          <h3 class="card-title text-azul" id="name"></h3>
+          <p class="card-text" id="cont-descripcion"></p>
+        </div>
+      </div>
     </div>
     <button class="btn btn-primary" id="editar"><i class="fa-solid fa-pencil"></i> Editar</button>
   </section>
