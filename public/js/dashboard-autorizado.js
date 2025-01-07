@@ -11,7 +11,7 @@ async function addProfessional() {
 
         try {
             // Enviar datos a la API
-            const response = await fetch('http://agendasalud.onrender.com/add-professional', {
+            const response = await fetch('https://agendasalud.onrender.com/add-professional', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -38,7 +38,7 @@ async function addProfessional() {
 // Función para cargar las áreas y profesionales desde la base de datos
 async function loadProfessionals() {
     try {
-        const response = await fetch('http://https://agendasalud.onrender.com/professionals');
+        const response = await fetch('https://agendasalud.onrender.com/professionals');
         const professionals = await response.json();
 
         const areaList = document.getElementById('areaList');
