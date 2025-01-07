@@ -133,6 +133,11 @@ const jsonData = {
   console.log("Archivo JSON creado con éxito: calenderregistroclinico-8aedace47e68.json");
 
 const SERVICE_ACCOUNT_KEY_FILE = path.join(__dirname, 'calenderregistroclinico-8aedace47e68.json');
+
+const fileContent = fs.readFileSync(SERVICE_ACCOUNT_KEY_FILE, 'utf8');
+console.log("Contenido del archivo JSON:");
+console.log(fileContent);
+
 let CALENDAR_ID = '';
 
 async function authenticate() {
