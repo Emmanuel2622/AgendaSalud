@@ -4,7 +4,7 @@ document.getElementById('appointmentDate').addEventListener('change', updateAvai
 
 let professionalWorkHours = {};
 
-fetch('http://agendasalud.onrender.com/api/get-hours')
+fetch('https://agendasalud.onrender.com/api/get-hours')
     .then(response => response.json())
     .then(data => {
         professionalWorkHours = data.reduce((acc, { fullName, startHour, endHour }) => {
@@ -61,7 +61,7 @@ function handleFormSubmit(event) {
         numberCode: numberCode // Añadir el area de país del teléfono del cliente
     };
 
-    fetch('http://agendasalud.onrender.com/create-event', {
+    fetch('https://agendasalud.onrender.com/create-event', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -190,7 +190,7 @@ function searchForNearestSlot(professionalName) {
             return; // Salir de la función
         }
 
-        fetch(`http://agendasalud.onrender.com/available-slots?date=${encodeURIComponent(formattedDate)}`)
+        fetch(`https://agendasalud.onrender.com/available-slots?date=${encodeURIComponent(formattedDate)}`)
             .then(response => response.json())
             .then(occupiedSlots => {
                 const availableSlots = getAvailableSlots(occupiedSlots, formattedDate, workHours);
@@ -250,7 +250,7 @@ function updateAvailableSlots() {
         }
 
         // Hacer la petición al servidor para obtener los horarios disponibles
-        fetch(`http://agendasalud.onrender.com/available-slots?date=${encodeURIComponent(selectedDate)}`)
+        fetch(`https://agendasalud.onrender.com/available-slots?date=${encodeURIComponent(selectedDate)}`)
             .then(response => response.json())
             .then(occupiedSlots => {
                 const availableSlots = getAvailableSlots(occupiedSlots, selectedDate, workHours);
@@ -319,7 +319,7 @@ document.getElementById('searchAppointmentForm').addEventListener('submit', func
     }
 
     // Realizar la búsqueda solo con el email
-    fetch(`http://agendasalud.onrender.com/search-appointment?email=${email}`)
+    fetch(`https://agendasalud.onrender.com/search-appointment?email=${email}`)
         .then(response => response.json())
         .then(data => {
             const appointmentsDiv = document.getElementById('appointments');
@@ -368,7 +368,7 @@ document.getElementById('searchAppointmentForm').addEventListener('submit', func
 });
 
 function deleteAppointment(eventId) {
-    fetch(`http://agendasalud.onrender.com/delete-appointment/${eventId}`, { method: 'DELETE' })
+    fetch(`https://agendasalud.onrender.com/delete-appointment/${eventId}`, { method: 'DELETE' })
         .then(response => response.json())
         .then(data => {
           Swal.fire({
