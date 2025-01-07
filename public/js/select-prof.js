@@ -1,16 +1,9 @@
-// Mapa de profesionales a sus respectivos IDs de calendario
-    //'Carolina Denis': 'carolinadenisodonto@gmail.com',
-    //'Carlos Emmanuel Denis': '56229a1828f08bbee7cd9bb6becf23344af8bc19e1b45b5d75cbb8532ce41352@group.calendar.google.com',
-    //'test': '56229a1828f08bbee7cd9bb6becf23344af8bc19e1b45b5d75cbb8532ce41352@group.calendar.google.com',
-    // Agrega más profesionales y sus IDs de calendario aquí
-
-
 let CALENDAR_ID = ''; // Variable global para almacenar el ID del calendario seleccionado
 
 // Función para cargar las áreas y profesionales desde la base de datos
 async function loadProfessionals() {
     try {
-        const response = await fetch('http://localhost:3000/professionals');
+        const response = await fetch('http://agendasalud.onrender.com/professionals');
         const professionals = await response.json();
 
         const areaList = document.getElementById('areaList');
@@ -31,7 +24,7 @@ async function populateAreaList(area) {
     const select = area;
 
     try {
-        const response = await fetch('http://localhost:3000/professionals');
+        const response = await fetch('http://agendasalud.onrender.com/professionals');
         const professionals = await response.json();
 
         professionals.forEach(prof => {
@@ -51,7 +44,7 @@ async function populateProfessionalList(area, selectProf) {
     select.innerHTML = ''; // Limpiar las opciones existentes
 
     try {
-        const response = await fetch('http://localhost:3000/professionals');
+        const response = await fetch('http://agendasalud.onrender.com/professionals');
         const professionals = await response.json();
 
         // Filtrar el área seleccionada
@@ -94,7 +87,7 @@ async function updateCalendarId(professionalName) {
     }
     //const newCalendarId = professionalCalendarIds[professionalName]; // Asegúrate de que `professionalCalendarIds` esté actualizado
     if (newCalendarId) {
-        fetch('http://localhost:3000/set-calendar', {
+        fetch('http://agendasalud.onrender.com/set-calendar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

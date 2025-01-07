@@ -4,7 +4,7 @@ document.getElementById('appointmentDate').addEventListener('change', updateAvai
 
 let professionalWorkHours = {};
 
-fetch('http://localhost:3000/api/get-hours')
+fetch('http://agendasalud.onrender.com/api/get-hours')
     .then(response => response.json())
     .then(data => {
         professionalWorkHours = data.reduce((acc, { fullName, startHour, endHour }) => {
@@ -14,10 +14,18 @@ fetch('http://localhost:3000/api/get-hours')
     })
     .catch(error => {
         console.error('Error al obtener los horarios:', error);
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: `Error de sistema, le pedimos disculpas.`,
+            footer: '<a href="https://wa.me/2615930274">Ayuda</a>'
+          });
     });
 
 function handleFormSubmit(event) {
+  try {
     event.preventDefault();
+
     const name = document.getElementById('patientName').value;
     const email = document.getElementById('email').value;
     const number = document.getElementById('number').value;
@@ -25,9 +33,21 @@ function handleFormSubmit(event) {
     const selectedSlot = document.getElementById('available-slots').value;
     const date = new Date(selectedSlot);
 
+    const now = new Date();
+
+    // Verificar si la fecha seleccionada es anterior a la actual
+    if (date < now) {
+      Swal.fire({
+        icon: "error",
+        title: "Fecha inválida",
+        text: "No puedes elegir una fecha pasada.",
+      });
+      return; // Detener el procesamiento del formulario
+    }
+
     const eventDetails = {
         summary: `Cita con ${name}`,
-        description: `Correo del paciente: ${email}, Numero de telefono: ${number}`,
+        description: `Correo del paciente: ${email}, Numero de teléfono: ${number}`,
         start: {
             dateTime: date.toISOString(),
             timeZone: 'America/Argentina/Buenos_Aires'
@@ -38,10 +58,10 @@ function handleFormSubmit(event) {
         },
         email: email, // Añadir el correo del cliente
         number: number, // Añadir el número de teléfono del cliente
-        numberCode: numberCode // Añadir el area de pais del teléfono del cliente
+        numberCode: numberCode // Añadir el area de país del teléfono del cliente
     };
 
-    fetch('http://localhost:3000/create-event', {
+    fetch('http://agendasalud.onrender.com/create-event', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -54,20 +74,45 @@ function handleFormSubmit(event) {
                 document.getElementById('appointmentDate').value = '';
                 document.getElementById('available-slots').value = '';
                 // Mostrar el modal de éxito
-                const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-                successModal.show();
+                Swal.fire({
+                  title: "Turno Agendado con Éxito",
+                  icon: "success",
+                  confirmButtonColor: "#3085d6",
+                  confirmButtonText: "Ok!"
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      location.reload()
+                    }
+                  });
             } else {
                 // Mostrar el modal de error
-                const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-                errorModal.show();
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Turno no agendado",
+                  footer: '<a href="https://wa.me/2615930274">Ayuda</a>'
+                });
             }
         })
         .catch(error => {
             console.error('Error al enviar la solicitud:', error);
             // Mostrar el modal de error en caso de fallo
-            const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-            errorModal.show();
+            // Mostrar el modal de error
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: `Turno no agendado: ${e.message}`,
+              footer: '<a href="https://wa.me/2615930274">Ayuda</a>'
+            });
         });
+      } catch (e) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `Turno no agendado: ${e.message}`,
+          footer: '<a href="https://wa.me/2615930274">Ayuda</a>'
+        });
+      }
 }
 
 function getAvailableSlots(occupiedSlots, selectedDate, workHours) {
@@ -76,8 +121,8 @@ function getAvailableSlots(occupiedSlots, selectedDate, workHours) {
     const [startHour, startMinute] = workHours.start.split(':').map(Number);
     const [endHour, endMinute] = workHours.end.split(':').map(Number);
 
-    const adjustedStartHour = (startHour + 3) % 24;
-    const adjustedEndtHour = (endHour + 3) % 24;
+    const adjustedStartHour = (startHour) % 24;
+    const adjustedEndtHour = (endHour) % 24;
 
     const timeMin = new Date(selectedDate);
     timeMin.setUTCHours(adjustedStartHour, startMinute); // Establece la hora al inicio del día
@@ -95,6 +140,8 @@ function getAvailableSlots(occupiedSlots, selectedDate, workHours) {
 
         // Si no está ocupado, añadir a los slots disponibles
         if (isSlotnotOccupied) {
+            // Añadir 3 horas al slot
+            currentTime.setHours(currentTime.getHours() + 3);
             availableSlots.push(currentTime.toISOString()); // Devuelve en formato UTC
         }
         // Avanzar al siguiente slot
@@ -117,6 +164,9 @@ function findNearestSlot(availableSlots) {
             if (!nearestSlot || slotDate < new Date(nearestSlot)) {
                 nearestSlot = slot;
             }
+        }else{
+            document.getElementById('nearest-slot').textContent = `Elija una fecha valida.`;
+            findNearestSlot();
         }
     }
 
@@ -140,7 +190,7 @@ function searchForNearestSlot(professionalName) {
             return; // Salir de la función
         }
 
-        fetch(`http://localhost:3000/available-slots?date=${encodeURIComponent(formattedDate)}`)
+        fetch(`http://agendasalud.onrender.com/available-slots?date=${encodeURIComponent(formattedDate)}`)
             .then(response => response.json())
             .then(occupiedSlots => {
                 const availableSlots = getAvailableSlots(occupiedSlots, formattedDate, workHours);
@@ -200,7 +250,7 @@ function updateAvailableSlots() {
         }
 
         // Hacer la petición al servidor para obtener los horarios disponibles
-        fetch(`http://localhost:3000/available-slots?date=${encodeURIComponent(selectedDate)}`)
+        fetch(`http://agendasalud.onrender.com/available-slots?date=${encodeURIComponent(selectedDate)}`)
             .then(response => response.json())
             .then(occupiedSlots => {
                 const availableSlots = getAvailableSlots(occupiedSlots, selectedDate, workHours);
@@ -245,10 +295,18 @@ function updateAvailableSlots() {
             })
             .catch(error => {
                 console.error('Error al obtener los horarios disponibles:', error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: `Error de sistema, le pedimos disculpas.`,
+                    footer: '<a href="https://wa.me/2615930274">Ayuda</a>'
+                  });
             });
     }
 }
 
+
+// Busca Turnos
 document.getElementById('searchAppointmentForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
@@ -261,7 +319,7 @@ document.getElementById('searchAppointmentForm').addEventListener('submit', func
     }
 
     // Realizar la búsqueda solo con el email
-    fetch(`http://localhost:3000/search-appointment?email=${email}`)
+    fetch(`http://agendasalud.onrender.com/search-appointment?email=${email}`)
         .then(response => response.json())
         .then(data => {
             const appointmentsDiv = document.getElementById('appointments');
@@ -270,9 +328,25 @@ document.getElementById('searchAppointmentForm').addEventListener('submit', func
             if (data.length > 0) {
                 data.forEach(appointment => {
                     const appointmentDiv = document.createElement('div');
+
+                    // Tratar la fecha
+                    const fecha = new Date(appointment.start.dateTime)
+                    fecha.setHours(fecha.getHours() - 3);
+                    const opciones = {
+                        weekday: 'long', // día de la semana
+                        year: 'numeric', // año
+                        month: 'long', // mes completo
+                        day: 'numeric', // día del mes
+                        hour: '2-digit', // hora con 2 dígitos
+                        minute: '2-digit', // minutos con 2 dígitos
+                        hour12: true // formato 12 horas (AM/PM)
+                    };
+                    const fechaFormateada = fecha.toLocaleString('es-ES', opciones);
                     appointmentDiv.innerHTML = `
-                        <p class="mt-4">Turno: ${appointment.summary} (${appointment.start.dateTime})</p>
-                        <button class="btn btn-celeste text-white" onclick="deleteAppointment('${appointment.id}')">Eliminar Turno</button>
+                    <div class="my-4 border-start border-primary pe-2">
+                      <p class="d-inline ms-3 me-3">Turno: ${fechaFormateada}</p>
+                      <button class="btn btn-danger text-white d-inline" onclick="deleteAppointment('${appointment.id}')"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
                     `;
                     appointmentsDiv.appendChild(appointmentDiv);
                 });
@@ -282,15 +356,39 @@ document.getElementById('searchAppointmentForm').addEventListener('submit', func
                     '<p class="mt-4">Recuerde que únicamente aparecerán los turnos solicitados a través de nuestro sistema. Si ha solicitado un turno de manera presencial, le recomendamos que se comunique directamente con el centro médico donde realizó la solicitud.</p>';
             }
         })
-        .catch(error => console.error('Error al buscar turnos:', error));
+        .catch(error => {
+            console.error('Error al buscar turnos:', error);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: `Error de sistema, le pedimos disculpas.`,
+                footer: '<a href="https://wa.me/2615930274">Ayuda</a>'
+              });
+        });
 });
 
 function deleteAppointment(eventId) {
-    fetch(`http://localhost:3000/delete-appointment/${eventId}`, { method: 'DELETE' })
+    fetch(`http://agendasalud.onrender.com/delete-appointment/${eventId}`, { method: 'DELETE' })
         .then(response => response.json())
         .then(data => {
-            alert('Turno eliminado');
-            location.reload(); // Recargar la página para actualizar la lista de turnos
+          Swal.fire({
+          title: "Turno eliminado con éxito",
+          icon: "success",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Ok!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              location.reload()
+            }
+          });
         })
-        .catch(error => console.error('Error al eliminar turno:', error));
+        .catch(error => {
+            console.error('Error al eliminar turno:', error);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: `Error de sistema, le pedimos disculpas.`,
+                footer: '<a href="https://wa.me/2615930274">Ayuda</a>'
+              });
+        });
 }

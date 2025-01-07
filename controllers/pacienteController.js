@@ -1,20 +1,35 @@
 const Patient = require('../models/Paciente');
 
 exports.regisPacient = async (req, res) => {
-    const { fullName, email, password, dni, telefono, sintomas, diagnostico, tratamiento, fecha, area } = req.body;
+    const { fullName, email, password, dni, telefono, sexo, direccion, fechaNacimiento, edad, obraSocial, fechaApertura, sintomas, diagnostico, tratamiento, fecha, area, profesional } = req.body;
 
     try {
+      let fechaApertura = new Date(fecha).toLocaleString("es-AR", {
+          day: "numeric",
+          month: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric"
+      });
+
         const newPatients = new Patient({
             fullName,
             email,
             password,
             dni,
             telefono,
+            sexo,
+            direccion,
+            fechaNacimiento,
+            edad,
+            obraSocial,
+            fechaApertura,
             sintomas,
             diagnostico,
             tratamiento,
             fecha,
-            area
+            area,
+            profesional
         });
 
         await newPatients.save();
@@ -51,14 +66,15 @@ exports.saveData = async (req, res) => {
 };
 
 exports.data = async (req, res) => {
-    const { dni } = req.body;
-
-    console.log("DNI recibido:", dni); // Debug: Verificar DNI recibido
-
+    const { dni, password } = req.body;
     try {
         const pacient = await Patient.findOne({ dni });
         if (!pacient) {
             return res.status(404).json({ error: 'Paciente no encontrado' });
+        }
+
+        if (password != pacient.password) {
+            return res.status(404).json({ error: 'Contraseña incorrecta' });
         }
 
         // Formatear las fechas en el backend
@@ -72,7 +88,9 @@ exports.data = async (req, res) => {
             }),
             sintomas: pacient.sintomas[index],
             diagnostico: pacient.diagnostico[index],
-            tratamiento: pacient.tratamiento[index]
+            tratamiento: pacient.tratamiento[index],
+            area: pacient.area[index],
+            profesional: pacient.profesional[index]
         }));
 
         res.status(200).json({
@@ -80,7 +98,13 @@ exports.data = async (req, res) => {
             dni: pacient.dni,
             telefono: pacient.telefono,
             email: pacient.email,
-            area: pacient.area,
+            telefono: pacient.telefono,
+            direccion: pacient.direccion,
+            fechaNacimiento: pacient.fechaNacimiento,
+            edad: pacient.edad,
+            obraSocial: pacient.obraSocial,
+            sexo: pacient.sexo,
+            fechaApertura: pacient.fechaApertura,
             history: formattedHistory
         });
     } catch (error) {

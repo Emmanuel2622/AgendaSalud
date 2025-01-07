@@ -62,7 +62,7 @@ async function savePrecio(){
     }
 };
 
-// cambiar el descripcion
+// cambiar el descripción
 async function saveDescripcion(){
     const response = await fetch('/api/user');
     const userData = await response.json();
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error:', data.error);
     }
 
-    // Obtener la descripcion del prof
+    // Obtener la descripción del prof
     const responseDirec = await fetch('/auth/get-direccion', {
         method: 'POST',
         headers: {
@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (data.length > 0) {
                 const horariosText = data.map(horario =>
-                    `${horario.startHour} - ${horario.endHour}`
+                    `${horario.startHour}hs - ${horario.endHour}hs`
                 ).join(', ');
 
                 horariosSpan.textContent = horariosText;
@@ -329,7 +329,6 @@ document.getElementById('professionalForm').addEventListener('submit', async (e)
         body: JSON.stringify({ fullName, startHour, endHour }),
     });
     const result = await response.json();
-    console.log(result);
     location.reload()
 });
 

@@ -12,7 +12,6 @@ const authRoutes = require('./routes/authRoutes');
 const horariosRoutes = require('./routes/horarios');
 const pacienteRoutes = require('./routes/pacienteRoutes');
 
-
 require('dotenv').config
 
 const app = express();

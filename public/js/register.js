@@ -10,7 +10,7 @@ async function addProfessional() {
     try {
       // Enviar datos a la API para agregar profesional
       const addProfessionalResponse = await fetch(
-        "http://localhost:3000/add-professional",
+        "http://agendasalud.onrender.com/add-professional",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -36,9 +36,6 @@ async function addProfessional() {
       }
 
       const result = await saveAreaResponse.json();
-      console.log(result);
-
-      console.log("Área y profesional agregados exitosamente");
       document.getElementById("areaNameDash").value = ""; // Limpiar el input
       return true;
     } catch (error) {
@@ -57,7 +54,7 @@ async function populateAreaList(area) {
   const select = area;
 
   try {
-    const response = await fetch("http://localhost:3000/professionals");
+    const response = await fetch("http://agendasalud.onrender.com/professionals");
     const professionals = await response.json();
 
     professionals.forEach((prof) => {
@@ -73,7 +70,6 @@ async function populateAreaList(area) {
 
 function test() {
   const area = document.getElementById("areaNameDash").value;
-  console.log("area: ",area);
 };
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -89,8 +85,11 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
   const activationCode = document.getElementById("activationCode").value;
   const fullName = document.getElementById("fullName").value;
   const email = document.getElementById("registerEmail").value;
+  const dni = document.getElementById("registerDNI").value;
+  const telefono = document.getElementById("registerPhone").value;
   const password = document.getElementById("registerPassword").value;
   const area = document.getElementById("areaNameDash").value;
+
 
   try {
     // Enviar datos para registrar al usuario
@@ -99,7 +98,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ fullName, email, password, activationCode, area }),
+      body: JSON.stringify({ fullName, email, dni, telefono, password, activationCode, area }),
     });
 
     if (!response.ok) {

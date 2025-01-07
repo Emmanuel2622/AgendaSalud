@@ -47,7 +47,7 @@
 
       <hr class="mb-4">
 
-      <!-- Seleccion Profesional -->
+      <!-- Selección Profesional -->
       <form id="select-prof-form" style="display: none">
         <label for="areaName" class="mb-2 text-azul-marino">Area Profesional:</label>
         <select id="areaName" name="areaName" required class="form-select mb-4">
@@ -94,7 +94,7 @@
           <option value="+91">India</option>
         </select><br />
 
-        <label for="number" class="mb-2 text-azul-marino">Numero Telefonico</label>
+        <label for="number" class="mb-2 text-azul-marino">Numero Telefónico</label>
         <div class="row">
           <div class="col-4 col-sm-3 col-md-2">
             <input type="text" id="number-code" class="form-control" value="+54" readonly>
@@ -106,7 +106,7 @@
 
         <label for="appointmentDate" class="mb-2 text-azul-marino">Fecha de la Cita:</label>
         <input type="date" id="appointmentDate" name="appointmentDate" required class="form-control" /><br />
-        
+
         <p id="nearest-slot"></p>
 
         <label for="available-slots" class="mb-2 text-azul-marino">Horarios Disponibles:</label>
@@ -137,13 +137,14 @@
 
       <button type="button" id="volver" class="btn btn-celeste text-white me-2">Volver</button>
       <button type="submit" class="btn btn-celeste text-white">Buscar Turnos</button>
-    </form> 
-  <div id="appointments"></div>
-  
+    </form>
+  <div id="appointments" class="container">
+  </div>
+
   </section>
 
 
-  <!-- Modal para verificacion de datos -->
+  <!-- Modal para verificación de datos -->
   <div class="modal fade" id="datosModal" tabindex="-1" aria-labelledby="datosModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -154,7 +155,7 @@
         <div class="modal-body">
           Tu cita sera registrada con con los siguientes datos.
           <div>Nombre y Apellido: <span id="v-name"></span></div>
-          <div>Numero Telefonico: <span id="v-number"></span></div>
+          <div>Numero Telefónico: <span id="v-number"></span></div>
           <div>Email: <span id="v-email"></span></div>
           <div>Turno: <span id="v-cita"></span>hs</div>
         </div>
@@ -165,44 +166,6 @@
       </div>
     </div>
   </div>
-
-
-  <!-- Modal para el éxito en la creación de la cita -->
-  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="successModalLabel">Cita Registrada</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          Tu cita ha sido registrada con éxito en el calendario.
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal para el error en la creación de la cita -->
-  <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="errorModalLabel">Error al Registrar Cita</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          Hubo un error al registrar la cita. Inténtalo de nuevo más tarde.
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
 
   <section class="mt-5">
     <div class="container">
@@ -225,11 +188,13 @@
   <footer class="footer text-center py-4 mt-5 border-top">
     <p>&copy; 2024 Agenda Salud. Todos los derechos reservados.</p>
     <div>
-        <a href="terminos.html">Términos de servicio</a> | 
+        <a href="terminos.html">Términos de servicio</a> |
         <a href="politicas.html">Política de privacidad</a>
     </div>
   </footer>
 
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
