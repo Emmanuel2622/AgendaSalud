@@ -21,7 +21,6 @@ async function searchPaciente() {
         throw new Error('Error al obtener los datos del paciente');
       }
       const data = await response.json();
-      console.log('Datos del paciente:', data);
 
       document.getElementById('windowsHistoriaClinica').style.display = 'block';
       document.getElementById('windowSearchHC').style.display = 'none';
@@ -89,16 +88,44 @@ async function searchPaciente() {
   }
 
 
-  // Descargar Registro Clinico
+  // Download PDF
   async function downloadPatientHistory() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    // Datos del paciente
-    const nombre = document.getElementById("namePaciente").innerText;
-    const historialContent = document.getElementById("bodyModal").innerText;
+    // Obtener datos del paciente del fetch
+    const dni = document.getElementById("indni").value;
+    const password = document.getElementById("passwd").value;
 
-    // Estilos y encabezados
+    let data;
+    try {
+      const response = await fetch('/pacient/get-data-pacient', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ dni, password })
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al obtener los datos del paciente');
+      }
+      data = await response.json(); // Aquí obtienes el JSON directamente
+    } catch (error) {
+      console.error("Error al obtener datos del paciente:", error);
+      alert("No se pudo obtener el historial clínico del paciente.");
+      return;
+    }
+
+    // Datos del paciente
+    const {
+      fullName = "N/A", telefono = "N/A", dni: pacienteDni = "N/A",
+      email = "N/A", sexo = "N/A", fechaNacimiento = "N/A",
+      edad = "N/A", direccion = "N/A", obraSocial = "N/A",
+      fechaApertura = "N/A", history = []
+    } = data;
+
+    // Encabezado
     doc.setFontSize(20);
     doc.setFont("helvetica", "bold");
     doc.text("Agenda Salud", 105, 20, null, null, "center");
@@ -111,59 +138,117 @@ async function searchPaciente() {
     doc.setLineWidth(0.5);
     doc.line(10, 35, 200, 35);
 
-    // Información del paciente
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "bold");
-    doc.text("Nombre:", 10, 45);
-    doc.setFont("helvetica", "normal");
-    doc.text(nombre, 40, 45);
+    // Información del paciente en dos columnas
+    const patientInfoLeft = [
+      { label: "Nombre", value: fullName },
+      { label: "Teléfono", value: telefono },
+      { label: "DNI", value: pacienteDni },
+      { label: "Email", value: email },
+      { label: "Sexo", value: sexo }
+    ];
 
-    // Datos del paciente
-    const telefono = document.getElementById("telefonoPaciente") ? document.getElementById("telefonoPaciente").innerText : "N/A";
-    const dni = document.getElementById("dniPaciente") ? document.getElementById("dniPaciente").innerText : "N/A";
-    const email = document.getElementById("emailPaciente") ? document.getElementById("emailPaciente").innerText : "N/A";
+    const patientInfoRight = [
+      { label: "Fecha de Nacimiento", value: fechaNacimiento },
+      { label: "Edad", value: edad },
+      { label: "Dirección", value: direccion },
+      { label: "Obra Social", value: obraSocial },
+      { label: "Fecha de Apertura", value: fechaApertura }
+    ];
 
-    doc.setFont("helvetica", "bold");
-    doc.text("Teléfono:", 10, 55);
-    doc.setFont("helvetica", "normal");
-    doc.text(telefono, 40, 55);
+    // Coordenadas iniciales
+    let yPositionLeft = 45; // Para la columna izquierda
+    let yPositionRight = 45; // Para la columna derecha
+    const leftX = 10; // Posición X para la columna izquierda
+    const rightX = 105; // Posición X para la columna derecha
 
-    doc.setFont("helvetica", "bold");
-    doc.text("DNI:", 10, 65);
-    doc.setFont("helvetica", "normal");
-    doc.text(dni, 40, 65);
-
-    doc.setFont("helvetica", "bold");
-    doc.text("Email:", 10, 75);
-    doc.setFont("helvetica", "normal");
-    doc.text(email, 40, 75);
-
-    // Línea de separación
-    doc.setLineWidth(0.5);
-    doc.line(10, 85, 200, 85);
-
-    // Historial clínico
-    doc.setFontSize(14);
-    doc.setFont("helvetica", "bold");
-    doc.text("Historial Médico", 10, 95);
-
-    // Separar y mejorar el contenido del historial
-    const contentLines = historialContent.split("\n");
-    let yPosition = 105; // Posición inicial en el eje Y para el contenido del historial
-
-    contentLines.forEach(line => {
-        if (line.trim() !== "") {
-            // Aseguramos que cada línea esté separada
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(12);
-            doc.text(line, 10, yPosition);
-            yPosition += 10; // Espacio entre las líneas de texto
-        }
+    // Renderizar columna izquierda
+    patientInfoLeft.forEach(info => {
+      if (yPositionLeft > 280) {
+        doc.addPage();
+        yPositionLeft = 20;
+        yPositionRight = 20; // Reinicia ambas columnas
+      }
+      doc.setFontSize(13);
+      doc.setFont("helvetica", "bold");
+      doc.text(`${info.label}:`, leftX, yPositionLeft);
+      doc.setFontSize(13);
+      doc.setFont("helvetica", "normal");
+      doc.text(info.value, leftX + 25, yPositionLeft);
+      yPositionLeft += 10;
     });
 
-    // Agregar un pequeño margen al final antes de la descarga
-    doc.text("Fin del historial", 10, yPosition + 10);
+    // Renderizar columna derecha
+    patientInfoRight.forEach(info => {
+      if (yPositionRight > 280) {
+        doc.addPage();
+        yPositionLeft = 20;
+        yPositionRight = 20; // Reinicia ambas columnas
+      }
+      doc.setFontSize(13);
+      doc.setFont("helvetica", "bold");
+      doc.text(`${info.label}:`, rightX, yPositionRight);
+      doc.setFontSize(13);
+      doc.setFont("helvetica", "normal");
+      doc.text(info.value, rightX + 55, yPositionRight);
+      yPositionRight += 10;
+    });
 
-    // Descarga el PDF
-    doc.save(`Historial_${nombre}.pdf`);
+    // Línea de separación entre los datos del paciente y el historial
+    const lineY = Math.max(yPositionLeft, yPositionRight) + 10; // Línea debajo del contenido mayor
+    doc.line(10, lineY, 200, lineY);
+
+    // Historial médico
+    let yPosition = lineY + 10; // Ajustar la posición de inicio para el historial
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text("Historial Médico", 10, yPosition);
+    yPosition += 10;
+
+    // Procesar historial médico
+    const pageHeight = doc.internal.pageSize.height; // Altura de la página
+    const margin = 10;
+    const maxHeight = pageHeight - margin;
+
+    history.forEach(entry => {
+      const content = [
+        `Profesional: ${entry.profesional}`,
+        `Área: ${entry.area}`,
+        `Fecha: ${entry.fecha}hs`,
+      ];
+
+      const sintomas = doc.splitTextToSize(`Síntomas: ${entry.sintomas}`, 180);
+      const diagnostico = doc.splitTextToSize(`Diagnóstico: ${entry.diagnostico}`, 180);
+      const tratamiento = doc.splitTextToSize(`Tratamiento: ${entry.tratamiento}`, 180);
+
+      const allContent = [...content, '', ...sintomas, '', ...diagnostico, '', ...tratamiento];
+
+      allContent.forEach(line => {
+        if (yPosition > maxHeight) {
+          doc.addPage();
+          yPosition = 20;
+        }
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(12);
+        doc.text(line, 10, yPosition);
+        yPosition += 7;
+      });
+
+      if (yPosition > maxHeight) {
+        doc.addPage();
+        yPosition = 20;
+      }
+      doc.line(10, yPosition, 200, yPosition);
+      yPosition += 10;
+    });
+
+    if (yPosition > maxHeight) {
+      doc.addPage();
+      yPosition = 20;
+    }
+
+    doc.setFont("helvetica", "bold");
+    doc.text("Fin del historial clinico", 10, yPosition + 5);
+
+    // Descargar el PDF
+    doc.save(`Historial_${fullName}.pdf`);
   }

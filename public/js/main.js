@@ -4,7 +4,7 @@ document.getElementById('appointmentDate').addEventListener('change', updateAvai
 
 let professionalWorkHours = {};
 
-fetch('http://localhost:3000/api/get-hours')
+fetch('http://agendasalud.onrender.com/api/get-hours')
     .then(response => response.json())
     .then(data => {
         professionalWorkHours = data.reduce((acc, { fullName, startHour, endHour }) => {
@@ -61,7 +61,7 @@ function handleFormSubmit(event) {
         numberCode: numberCode // Añadir el area de país del teléfono del cliente
     };
 
-    fetch('http://localhost:3000/create-event', {
+    fetch('http://agendasalud.onrender.com/create-event', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -147,8 +147,7 @@ function getAvailableSlots(occupiedSlots, selectedDate, workHours) {
         // Avanzar al siguiente slot
         currentTime = nextSlot;
     }
-    
-    console.log(availableSlots)
+
     return availableSlots;
 }
 
@@ -178,7 +177,7 @@ function findNearestSlot(availableSlots) {
 function searchForNearestSlot(professionalName) {
     const workHours = professionalWorkHours[professionalName];
     let currentDate = new Date();
-    
+
     // Buscar hasta encontrar el turno más cercano, avanzando un día cada vez
     const fetchNearestSlot = () => {
         const formattedDate = currentDate.toISOString().split('T')[0]; // Formato YYYY-MM-DD
@@ -191,11 +190,11 @@ function searchForNearestSlot(professionalName) {
             return; // Salir de la función
         }
 
-        fetch(`http://localhost:3000/available-slots?date=${encodeURIComponent(formattedDate)}`)
+        fetch(`http://agendasalud.onrender.com/available-slots?date=${encodeURIComponent(formattedDate)}`)
             .then(response => response.json())
             .then(occupiedSlots => {
                 const availableSlots = getAvailableSlots(occupiedSlots, formattedDate, workHours);
-                
+
                 if (availableSlots.length > 0) {
                     const nearestSlot = findNearestSlot(availableSlots);
 
@@ -251,7 +250,7 @@ function updateAvailableSlots() {
         }
 
         // Hacer la petición al servidor para obtener los horarios disponibles
-        fetch(`http://localhost:3000/available-slots?date=${encodeURIComponent(selectedDate)}`)
+        fetch(`http://agendasalud.onrender.com/available-slots?date=${encodeURIComponent(selectedDate)}`)
             .then(response => response.json())
             .then(occupiedSlots => {
                 const availableSlots = getAvailableSlots(occupiedSlots, selectedDate, workHours);
@@ -320,7 +319,7 @@ document.getElementById('searchAppointmentForm').addEventListener('submit', func
     }
 
     // Realizar la búsqueda solo con el email
-    fetch(`http://localhost:3000/search-appointment?email=${email}`)
+    fetch(`http://agendasalud.onrender.com/search-appointment?email=${email}`)
         .then(response => response.json())
         .then(data => {
             const appointmentsDiv = document.getElementById('appointments');
@@ -369,7 +368,7 @@ document.getElementById('searchAppointmentForm').addEventListener('submit', func
 });
 
 function deleteAppointment(eventId) {
-    fetch(`http://localhost:3000/delete-appointment/${eventId}`, { method: 'DELETE' })
+    fetch(`http://agendasalud.onrender.com/delete-appointment/${eventId}`, { method: 'DELETE' })
         .then(response => response.json())
         .then(data => {
           Swal.fire({

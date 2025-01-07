@@ -99,7 +99,6 @@ async function searchPaciente() {
       throw new Error('Error al obtener los datos del paciente');
     }
     const data = await response.json();
-    console.log('Datos del paciente:', data);
 
     document.getElementById('menu').style.display = 'none';
     document.getElementById('registrarPaciente').style.display = 'none';

@@ -11,7 +11,7 @@ async function addProfessional() {
 
         try {
             // Enviar datos a la API
-            const response = await fetch('http://localhost:3000/add-professional', {
+            const response = await fetch('http://agendasalud.onrender.com/add-professional', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -38,7 +38,7 @@ async function addProfessional() {
 // Función para cargar las áreas y profesionales desde la base de datos
 async function loadProfessionals() {
     try {
-        const response = await fetch('http://localhost:3000/professionals');
+        const response = await fetch('http://https://agendasalud.onrender.com/professionals');
         const professionals = await response.json();
 
         const areaList = document.getElementById('areaList');
@@ -71,14 +71,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
         body: JSON.stringify({ email: userData.email }), // Cambia este email por el de la sesión si corresponde
     });
-    console.log(responseArea)
     const data = await responseArea.json();
 
     const areaElement = document.getElementById('Area');
 
     if (responseArea.ok) {
-        console.log('Área del profesional:', data.area);
-
         // Asignar el valor del área al elemento con el ID 'Area'
         if (areaElement) {
             areaElement.textContent = data.area; // Asigna el valor del área
@@ -147,7 +144,6 @@ document.getElementById('professionalForm').addEventListener('submit', async (e)
         body: JSON.stringify({ fullName, startHour, endHour }),
     });
     const result = await response.json();
-    console.log(result);
     location.reload()
 });
 

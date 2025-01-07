@@ -67,9 +67,6 @@ exports.saveData = async (req, res) => {
 
 exports.data = async (req, res) => {
     const { dni, password } = req.body;
-
-    console.log("DNI recibido:", dni); // Debug: Verificar DNI recibido
-
     try {
         const pacient = await Patient.findOne({ dni });
         if (!pacient) {

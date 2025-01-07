@@ -329,7 +329,6 @@ document.getElementById('professionalForm').addEventListener('submit', async (e)
         body: JSON.stringify({ fullName, startHour, endHour }),
     });
     const result = await response.json();
-    console.log(result);
     location.reload()
 });
 
