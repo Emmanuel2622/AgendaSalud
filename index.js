@@ -13,6 +13,7 @@ const User = require('./models/User');
 const authRoutes = require('./routes/authRoutes');
 const horariosRoutes = require('./routes/horarios');
 const pacienteRoutes = require('./routes/pacienteRoutes');
+const MongoStore = require('connect-mongo');
 
 require('dotenv').config
 
@@ -75,15 +76,19 @@ app.post('/upload-image/:dni', upload.single('image'), async (req, res) => {
 app.use('/uploads', express.static('uploads'));
 
 app.use(session({
-    secret:  process.env.SESSION_SECRET,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_URI,
+    }),
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
         maxAge: 1000 * 60 * 60 * 24, // 24 horas
-        secure: true,
+        secure: false,
         httpOnly: true
     }
 }));
+
 
 app.use('/auth', authRoutes);
 app.use('/pacient', pacienteRoutes);
