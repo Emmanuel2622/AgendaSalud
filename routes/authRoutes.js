@@ -15,6 +15,7 @@ router.post('/get-precio', authController.getPrecio);
 router.post('/save-direccion', authController.saveDirec);
 router.post('/get-direccion', authController.getDirec);
 router.post('/save-calenID', authController.saveCalenID);
-router.post('/get-calenID', authController.getCalenID)
+router.post('/get-calenID', authController.getCalenID),
+router.post('/get-img', authController.getImg),
 
 module.exports = router;

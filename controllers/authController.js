@@ -28,6 +28,7 @@ exports.register = async (req, res) => {
         let precio = 0;
         let direccion = "Calle Muestra 123";
         let calendarid = ""
+        let image = "img/img-face.png"
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({
             fullName,
@@ -42,7 +43,8 @@ exports.register = async (req, res) => {
             descripcion,
             precio,
             direccion,
-            calendarid
+            calendarid,
+            image
         });
 
         await newUser.save();
@@ -71,6 +73,8 @@ exports.login = async (req, res) => {
         req.session.isAuthenticated = true;
         req.session.email = user.email;
         req.session.fullName = user.fullName;
+        req.session.dni = user.dni;
+
 
         res.status(200).json({ message: 'Inicio de sesión exitoso' });
     } catch (error) {
@@ -345,4 +349,24 @@ exports.getCalenID = async (req, res) => {
         console.error(error);
         res.status(500).json({ error: 'Error al obtener el calendarid' });
     }
+};
+
+exports.getImg = async (req, res) => {
+  try {
+    const dni = req.body.dni;
+    if (!dni) {
+      return res.status(400).json({ error: 'dni no proporcionado.' });
+    }
+
+    const user = await User.findOne({ dni });
+
+    if (!user) {
+        return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.status(200).json({ image: user.image });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener la imagen' });
+  }
 };

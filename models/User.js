@@ -57,7 +57,11 @@ const userSchema = new mongoose.Schema({
     calendarid:{
         type: String,
         require: false
-    }
+    },
+    image: {
+    type: String,
+    required: false,
+  }
 });
 
 const User = mongoose.model('User', userSchema);

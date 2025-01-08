@@ -6,8 +6,10 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const mongoose = require('./config/database');
 const fs = require('fs');
+const multer = require('multer');
 
 const Professional = require('./models/Professional');
+const User = require('./models/User');
 const authRoutes = require('./routes/authRoutes');
 const horariosRoutes = require('./routes/horarios');
 const pacienteRoutes = require('./routes/pacienteRoutes');
@@ -26,13 +28,59 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Configuración de Multer para guardar la imagen
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './uploads/'); // Directorio donde se guardarán las imágenes
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Nombre único para la imagen
+  }
+});
+
+const upload = multer({ storage: storage });
+
+// Ruta para subir la imagen
+app.post('/upload-image/:dni', upload.single('image'), async (req, res) => {
+  try {
+    const { dni } = req.params;
+    const file = req.file;
+
+    if (!file) {
+      return res.status(400).json({ message: 'No se ha subido ninguna imagen.' });
+    }
+
+    // Genera la URL de la imagen
+    const imageUrl = `https://agendasalud.onrender.com/uploads/${file.filename}`;
+
+    // Actualizar la imagen del usuario en la base de datos
+    const updatedUser = await User.findOneAndUpdate(
+      { dni },
+      { $set: { image: imageUrl } }, // Guarda la URL de la imagen en el campo "image"
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'Usuario no encontrado.' });
+    }
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al subir la imagen.' });
+  }
+});
+
+// Servir imágenes estáticas
+app.use('/uploads', express.static('uploads'));
+
 app.use(session({
-    secret: 'mi-clave-secreta',
+    secret:  process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
         maxAge: 1000 * 60 * 60 * 24, // 24 horas
-        secure: false, // Cambia a true si usas HTTPS
+        secure: true,
         httpOnly: true
     }
 }));
@@ -43,7 +91,7 @@ app.use('/pacient', pacienteRoutes);
 app.get('/api/user', (req, res) => {
     console.log('Sesión:', req.session);
     if (req.session.isAuthenticated) {
-        res.json({ fullName: req.session.fullName, email: req.session.email});
+        res.json({ fullName: req.session.fullName, email: req.session.email, dni: req.session.dni});
     } else {
         res.status(401).json({ error: 'No autenticado' });
     }
