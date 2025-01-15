@@ -129,6 +129,15 @@ app.get('/dashboard/dashboardRegistroClinico.html', (req, res) => {
 
 });
 
+app.get('/dashboard/dashboardRegistroClinicoOdonto.html', (req, res) => {
+    if (req.session.isAuthenticated) {
+        res.sendFile(path.join(__dirname, 'dashboard', 'dashboardRegistroClinico.html'));
+    } else {
+        res.redirect('/login.html');
+    }
+
+});
+
 app.get('/dashboard/dashboardConfig.html', (req, res) => {
     if (req.session.isAuthenticated) {
         res.sendFile(path.join(__dirname, 'dashboard', 'dashboardconfig.html'));
