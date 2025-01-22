@@ -8,7 +8,6 @@ const pacienteSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
     },
     password: {
       type: String,
@@ -71,7 +70,12 @@ const pacienteSchema = new mongoose.Schema({
     profesional: {
       type: [String],
       required: true
-    }
+    },
+    dientes: [{
+      numero: { type: String, required: false },
+      notas: { type: String, required: false },
+      estado: { type: String, required: false }
+    }]
 });
 
 const Paciente = mongoose.model('Paciente', pacienteSchema);
