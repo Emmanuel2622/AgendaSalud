@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const pacienteSchema = new mongoose.Schema({
+  // Datos Estaticos
     fullName: {
         type: String,
         required: true
@@ -8,7 +9,6 @@ const pacienteSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
     },
     password: {
       type: String,
@@ -48,30 +48,21 @@ const pacienteSchema = new mongoose.Schema({
       required: false
     },
 
-    sintomas: {
-        type: [String],
-        required: true
-    },
-    diagnostico: {
-        type: [String],
-        required: true
-    },
-    tratamiento: {
-        type: [String],
-        required: true
-    },
-    fecha: {
-        type: [String],
-        required: true
-    },
-    area: {
-        type: [String],
-        required: true
-    },
-    profesional: {
-      type: [String],
-      required: true
-    }
+    // Datos Dinamicos
+
+    historial: [{
+      fecha: { type: String, required: false },
+      area: { type: String, required: true },
+      profesional: { type: String, required: true },
+      sintomas: { type: String, required: true} ,
+      diagnostico: { type: String, required: true },
+      tratamiento: { type: String, required: true },
+      dientes: [{
+        numero: { type: String, required: false },
+        notas: { type: String, required: false },
+        estado: { type: String, required: false }
+      }]
+    }]
 });
 
 const Paciente = mongoose.model('Paciente', pacienteSchema);
