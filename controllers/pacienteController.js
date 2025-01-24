@@ -1,9 +1,14 @@
 const Patient = require('../models/Paciente');
 
 exports.regisPacient = async (req, res) => {
-    const { fullName, email, password, dni, telefono, sexo, direccion, fechaNacimiento, edad, obraSocial, fechaApertura, sintomas, diagnostico, tratamiento, fecha, area, profesional, dientes } = req.body;
+    const { fullName, email, password, dni, telefono, sexo, direccion, fechaNacimiento, edad, obraSocial, fecha, area, profesional, sintomas, diagnostico, tratamiento, dientes } = req.body;
+    console.log(req.body);
 
     try {
+      if (!fullName || !email || !password || !dni || !telefono) {
+          return res.status(400).json({ error: 'Faltan datos obligatorios' });
+      }
+
       const fechaApertura = new Date(fecha).toLocaleString("es-AR", {
           day: "numeric",
           month: "numeric",
@@ -11,6 +16,22 @@ exports.regisPacient = async (req, res) => {
           hour: "numeric",
           minute: "numeric"
       });
+
+        // Array Historial
+
+        const historial = [
+    {
+        fecha: fecha,
+        area: area,
+        profesional: profesional,
+        sintomas: sintomas,
+        diagnostico: diagnostico,
+        tratamiento: tratamiento,
+        dientes: dientes
+    }
+];
+
+
         const newPatients = new Patient({
             fullName,
             email,
@@ -23,13 +44,7 @@ exports.regisPacient = async (req, res) => {
             edad,
             obraSocial,
             fechaApertura,
-            sintomas,
-            diagnostico,
-            tratamiento,
-            fecha,
-            area,
-            profesional,
-            dientes
+            historial
         });
 
         await newPatients.save();
@@ -40,8 +55,9 @@ exports.regisPacient = async (req, res) => {
     }
 };
 
+
 exports.saveData = async (req, res) => {
-    const { dni, sintomas, diagnostico, tratamiento, area, fecha } = req.body;
+    const { profesional, dni, sintomas, diagnostico, tratamiento, area, fecha, diente } = req.body;
 
     try {
         // Buscar paciente por DNI
@@ -49,21 +65,43 @@ exports.saveData = async (req, res) => {
         if (!pacient) {
             return res.status(404).json({ error: 'Paciente no encontrado' });
         }
+                
+        // Crear un nuevo registro para el historial
+        const nuevoHistorial = {
+            fecha: fecha || new Date().toLocaleString("es-AR", {
+                day: "numeric",
+                month: "numeric",
+                year: "numeric",
+                hour: "numeric",
+                minute: "numeric"
+            }),
+            area: area || "No especificado",
+            profesional: profesional || "No especificado", // Si necesitas recibir esto desde el frontend, cámbialo
+            sintomas: sintomas || "No especificado",
+            diagnostico: diagnostico || "No especificado",
+            tratamiento: tratamiento || "No especificado",
+            dientes: diente ? [
+                {
+                    numero: diente.numero || "No especificado",
+                    notas: diente.notas || "No especificado",
+                    estado: diente.estado || "No especificado"
+                }
+            ] : [] // Si no hay dientes, dejarlo como un array vacío
+        };
 
-        // Agregar los nuevos datos a los arreglos
-        pacient.sintomas.push(sintomas);
-        pacient.diagnostico.push(diagnostico);
-        pacient.tratamiento.push(tratamiento);
-        pacient.area.push(area);
-        pacient.fecha.push(fecha);
+        // Agregar el nuevo historial al paciente
+        pacient.historial.push(nuevoHistorial);
 
-        // Guardar los cambios
+        // Guardar los cambios en la base de datos
         await pacient.save();
-        res.status(200).json({ message: 'Datos del paciente actualizados con éxito' });
+
+        res.status(200).json({ message: 'Historial del paciente actualizado con éxito' });
     } catch (error) {
+        console.error("Error al actualizar los datos del paciente:", error.message);
         res.status(500).json({ error: 'Error al actualizar los datos del paciente' });
     }
 };
+
 
 exports.data = async (req, res) => {
     const { dni, password } = req.body;
@@ -76,21 +114,21 @@ exports.data = async (req, res) => {
         if (password != pacient.password) {
             return res.status(404).json({ error: 'Contraseña incorrecta' });
         }
-
-        // Formatear las fechas en el backend
-        const formattedHistory = pacient.fecha.map((fecha, index) => ({
-            fecha: new Date(fecha).toLocaleString("es-AR", {
-                day: "numeric",
-                month: "numeric",
-                year: "numeric",
-                hour: "numeric",
-                minute: "numeric"
-            }),
-            sintomas: pacient.sintomas[index],
-            diagnostico: pacient.diagnostico[index],
-            tratamiento: pacient.tratamiento[index],
-            area: pacient.area[index],
-            profesional: pacient.profesional[index]
+        // Suponiendo que 'pacient' es un objeto que se obtiene de la base de datos
+        const formattedHistory = pacient.historial.map(registro => ({
+          fecha: new Date(registro.fecha).toLocaleString("es-AR", {
+            day: "numeric",
+            month: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric"
+          }),
+          sintomas: registro.sintomas,
+          diagnostico: registro.diagnostico,
+          tratamiento: registro.tratamiento,
+          area: registro.area,
+          profesional: registro.profesional,
+          dientes: registro.dientes
         }));
 
         res.status(200).json({

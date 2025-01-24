@@ -35,29 +35,47 @@ async function addPacient() {
   const profesional = userData.fullName;
 
   // Obtener Area del prof
-const responseArea = await fetch('/auth/get-area', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email: userData.email }),
-});
-const dataArea = await responseArea.json();
+  const responseArea = await fetch('/auth/get-area', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: userData.email }),
+  });
+  const dataArea = await responseArea.json();
 
-if (!responseArea.ok) {
-    console.error('Error:', dataArea.error);
-    throw new Error('No se pudo obtener el área');
-}
-const area = dataArea.area;
+  if (!responseArea.ok) {
+      console.error('Error:', dataArea.error);
+      throw new Error('No se pudo obtener el área');
+  }
+  const area = dataArea.area;
 
-// Registrar Paciente
-const response = await fetch("/pacient/regis-pacient", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ fullName, dni, password, telefono, email, sexo, direccion, fechaNacimiento, edad, obraSocial, area, profesional, sintomas, diagnostico, tratamiento, fecha, dientes})
-});
+  // Registrar Paciente
+  const response = await fetch("/pacient/regis-pacient", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fullName,
+        dni,
+        password,
+        telefono,
+        email,
+        sexo,
+        direccion,
+        fechaNacimiento,
+        edad,
+        obraSocial,
+        fecha,
+        area,
+        profesional,
+        sintomas,
+        diagnostico,
+        tratamiento,
+        dientes
+      })
+  });
 
   if (response.ok) {
     Swal.fire({
@@ -158,6 +176,7 @@ async function saveDataPaciente() {
   const diagnostico = document.getElementById("save-diagnostico").value;
   const tratamiento = document.getElementById("save-tratamiento").value;
   const fecha = new Date();
+
   const user = await fetch('/api/user');
   const userData = await user.json();
   const profesional = userData.fullName;
