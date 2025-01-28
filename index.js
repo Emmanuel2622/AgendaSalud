@@ -96,7 +96,7 @@ app.use('/pacient', pacienteRoutes);
 app.get('/api/user', (req, res) => {
     console.log('Sesión:', req.session);
     if (req.session.isAuthenticated) {
-        res.json({ fullName: req.session.fullName, email: req.session.email, dni: req.session.dni});
+        res.json({ fullName: req.session.fullName, email: req.session.email, dni: req.session.dni, area: req.session.area});
     } else {
         res.status(401).json({ error: 'No autenticado' });
     }
@@ -120,27 +120,19 @@ app.get('/dashboard', (req, res) => {
     }
 });
 
-app.get('/dashboard/dashboardRegistroClinico.html', (req, res) => {
-    if (req.session.isAuthenticated) {
-        res.sendFile(path.join(__dirname, 'dashboard', 'dashboardRegistroClinico.html'));
-    } else {
-        res.redirect('/login.html');
-    }
-
+app.get('/dashboardRegistroClinico', (req, res) => {
+  if (req.session.isAuthenticated && req.session.area === 'Dentista') {
+    res.sendFile(path.join(__dirname, 'dashboard', 'dashboardRegistroClinicoOdonto.html'));
+  } else if (req.session.isAuthenticated && req.session.area != 'Dentista') {
+      res.sendFile(path.join(__dirname, 'dashboard', 'dashboardRegistroClinico.html'));
+  } else {
+      res.redirect('/login.html');
+  }
 });
 
-app.get('/dashboard/dashboardRegistroClinicoOdonto.html', (req, res) => {
+app.get('/dashboardConfig', (req, res) => {
     if (req.session.isAuthenticated) {
-        res.sendFile(path.join(__dirname, 'dashboard', 'dashboardRegistroClinico.html'));
-    } else {
-        res.redirect('/login.html');
-    }
-
-});
-
-app.get('/dashboard/dashboardConfig.html', (req, res) => {
-    if (req.session.isAuthenticated) {
-        res.sendFile(path.join(__dirname, 'dashboard', 'dashboardconfig.html'));
+        res.sendFile(path.join(__dirname, 'dashboard', 'dashboardConfig.html'));
     } else {
         res.redirect('/login.html');
     }
